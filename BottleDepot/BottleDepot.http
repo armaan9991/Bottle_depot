@@ -1,0 +1,6 @@
+@BottleDepot_HostAddress = http://localhost:5158
+
+GET {{BottleDepot_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
