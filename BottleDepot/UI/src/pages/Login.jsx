@@ -5,21 +5,7 @@ import { login as loginApi } from '../api/auth';
 export default function Login(){
     const[workId,setWorkId]=useState('');
     const[password,setPassword]=useState('')
-    const [loading,setLoading]=useState('')
-    // const {login} = UseAuth();
-    const navigate=useNavigate();
 
-    const handlelogin = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try{
-        var resp= await loginApi(workId,password);
-        login
-    }
-    catch{
-
-    }
-    }
     // setWorkId(workId);
     return(
         <div>
