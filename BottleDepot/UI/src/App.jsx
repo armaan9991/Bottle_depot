@@ -13,7 +13,7 @@ export default function App(){
 
   return(
     <div>
-    <Route>
+    <Routes>
       <Route path="/" element={<Login/>} />      /* Route back to login */
       
       <Route path="/ " element={                // route to Admin Dashboard  
@@ -51,7 +51,21 @@ export default function App(){
         }
       />
 
-    </Route>      
+      <Route path="" element={
+        <ProtectedRoute role="Employee">
+          <EmployeeDashboard/>
+        </ProtectedRoute>
+        }
+      />
+
+      <Route path="" element={
+        <ProtectedRoute  role="Employee">
+          <MySchedule/>
+        </ProtectedRoute>
+        }
+      />
+
+    </Routes>      
       
     <Login />
     </div>
