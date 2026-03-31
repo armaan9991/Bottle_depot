@@ -1,3 +1,3 @@
-export function ManageEmployees(){
+export default function ManageEmployees(){
     return;
 }

@@ -2,6 +2,15 @@ import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 
+import AdminDashBoard from "./pages/admin/AdminDashboard";
+import DailyRecord from "./pages/admin/DailyRecord";
+import ManageShipments from "./pages/admin/ManageShipments";
+import ManageEmployees  from "./pages/admin/ManageEmployees";
+import Reports from "./pages/admin/Reports";
+
+import EmployeeDashboard from "./pages/employee/EmployeeDashboard";
+import MySchedule from "./pages/employee/MySchedule";
+
 /*
 NEED  TO WRITE ROUTES STILL.
 */
