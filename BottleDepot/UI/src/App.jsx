@@ -4,15 +4,8 @@ export default function App(){
 
   return(
     <div>
-      {/* <Routes>
-        // we cheack if login page is used to log in as admin role.
-        <Route path="/admin/dashboard" element={
-          <ProtectedRoute role= "Admin">
-            <AdminDashboard/>
-          </ProtectedRoute>
-        } />
-        
-      </Routes> */}
+      { 
+      
     <Login />
     </div>
 

@@ -17,3 +17,5 @@ export default function AuthProvider(childern){
         </AuthContext.Provieder>
     );
 }
+
+export const useAuth=()=> useContext(AuthContext);
