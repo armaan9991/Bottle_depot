@@ -15,9 +15,19 @@ export default function Login(){
     try{
         var resp= await loginApi(workId,password);
         // login
+        login(resp.data);
+        if (resp.data.role === 'Admin'){
+            navigate('/')   // add route to admin..
+        }
+        else{
+            navigate('') // add route to employee
+        }
     }
-    catch{
-
+    catch(err){
+    
+    }
+    finally{
+        setLoading(false);
     }
     }
 
