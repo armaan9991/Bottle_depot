@@ -1,10 +1,23 @@
-import axios from "axios";
+import axios from 'axios';
 
-export default function API(){
-    axios.create({
-        baseURL:'http://localhost:5000/api',
-        headers:{
-            'Content-Type':'application/json'
+const API = axios.create({
+    baseURL: 'http://localhost:5158',
+});
+
+// This "interceptor" runs before every single API request
+API.interceptors.request.use(
+    (config) => {
+
+        const token = localStorage.getItem('jwt_token');
+
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
         }
-    })
-}
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
+    }
+);
+
+export default API;

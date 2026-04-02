@@ -1,21 +1,25 @@
-import { createContext,useContext,useState } from "react";
+import { createContext, useContext, useState } from "react";
+import { logoutUser } from "../api/auth"; // Brings in the token-clearing function
 
-const AuthContext=createContext();
+const AuthContext = createContext();
 
-export default function AuthProvider(childern){
-    const[user, setUser]=useState(null)     // null because we want user to be either null or particular user.
+export const AuthProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
 
-    const login =(UserData)=>{
-        setUser(UserData);
-    }
-    const logout=()=>{
-        setUser(null);
-    }
+    const login = (userData) => {
+        setUser(userData);
+    };
+
+    const logout = () => {
+        setUser(null); // Clears the user from React memory
+        logoutUser();  // Clears the JWT token from the browser!
+    };
+
     return (
-        <AuthContext.Provieder value={{user,    login   ,  logout   }   }>
-            {childern}
-        </AuthContext.Provieder>
+        <AuthContext.Provider value={{ user, login, logout }}>
+            {children}
+        </AuthContext.Provider>
     );
-}
+};
 
-export const useAuth=()=> useContext(AuthContext);
+export const useAuth = () => useContext(AuthContext);

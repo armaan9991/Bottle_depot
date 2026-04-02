@@ -1,6 +1,3 @@
-import Login from "../pages/Login";
-import API from "./axios";
-
 import API from "./axios";
 
 export const loginUser = async (workId, password) => {
@@ -9,8 +6,19 @@ export const loginUser = async (workId, password) => {
             WorkId: workId,
             Password: password
         });
+
+
+        if (response.data.token) {
+            localStorage.setItem('jwt_token', response.data.token);
+        }
+
         return response.data;
     } catch (error) {
         throw error;
     }
+};
+
+
+export const logoutUser = () => {
+    localStorage.removeItem('jwt_token');
 };
