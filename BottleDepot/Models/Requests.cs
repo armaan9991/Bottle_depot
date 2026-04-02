@@ -6,6 +6,13 @@ namespace BottleDepot.Models
     public string Password{get;set;}
 
     }
+
+    public class CreateCustomerRequest
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+    }
     public class CreateEmployeeRequest
     {
         public string Name { get; set; }

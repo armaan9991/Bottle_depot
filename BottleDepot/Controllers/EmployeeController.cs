@@ -132,6 +132,7 @@ namespace BottleDepot.Controllers
             }
         }
 
+        [HttpPost]
         public async Task<IActionResult> Create(CreateEmployeeRequest req)
         {
             try
