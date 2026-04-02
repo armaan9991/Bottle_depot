@@ -58,17 +58,18 @@ CREATE Table SCHEDULE(
     Foreign Key (WorkID) REFERENCES EMPLOYEE(WorkID) on delete CASCADE 
 );
 
-create table DAILY_RECORD(
-    RecordID INT PRIMARY KEY AUTO_INCREMENT,
-    TotalTranscation INT NOT NULL DEFAULT 0,
-    TotalValuePaid DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    TotalContainer INT NOT NULL DEFAULT 0,
-    RecordDate DATE NOT NULL,
-    WorkID  INT NOT NULL,
-    CONSTRAINT fk_DailyRecord
-    Foreign Key (WorkID) REFERENCES EMPLOYEE(WorkID)
-    on delete RESTRICT    
-);
+-- had typo error in totaltranscation.
+    create table DAILY_RECORD(
+        RecordID INT PRIMARY KEY AUTO_INCREMENT,
+        TotalTranscation INT NOT NULL DEFAULT 0,
+        TotalValuePaid DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+        TotalContainer INT NOT NULL DEFAULT 0,
+        RecordDate DATE NOT NULL,
+        WorkID  INT NOT NULL,
+        CONSTRAINT fk_DailyRecord
+        Foreign Key (WorkID) REFERENCES EMPLOYEE(WorkID)
+        on delete RESTRICT    
+    );
 CREATE Table Transaction(
     TransactionID INT PRIMARY KEY AUTO_INCREMENT,
     TransactionDate DATE NOT NULL,
@@ -76,7 +77,7 @@ CREATE Table Transaction(
     TotalContainers INT NOT NULL,
     CustomerID INT NOT NULL,
     WorkID INT NOT NULL,
-    RecordID int NOT NULL,
+    RecordID INT NOT NULL,
     CONSTRAINT fk_Transaction_emp
     Foreign Key (WorkID) REFERENCES EMPLOYEE(WorkID) on delete RESTRICT,
     CONSTRAINT fk_Transaction_cus
@@ -126,3 +127,6 @@ create Table SHIPMENT(
     Foreign Key (CompanyID) REFERENCES RECYCLE_COMPANY(CompanyID)
     on delete  RESTRICT
 );
+
+ALTER TABLE DAILY_RECORD
+RENAME COLUMN TotalTranscation TO TotalTransaction;
