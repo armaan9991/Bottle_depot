@@ -37,3 +37,11 @@ create table CONTAINER_TYPE(
     Size_of_Container decimal(10,2) not null,
     Material VARCHAR(30) NOT NULL,
 );
+
+
+CREATE TABLE RECYCLE_COMPANY(
+    CompanyID INT  PRIMARY KEY AUTO_INCREMENT,
+    CompanyName VARCHAR(100) NOT NULL,
+    Phone VARCHAR(20) NOT NULL
+);
+
