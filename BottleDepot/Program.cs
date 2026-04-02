@@ -1,4 +1,10 @@
+using MySqlConnector;
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<MySqlConnection>(_ =>
+    new MySqlConnection(
+        builder.Configuration
+               .GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 
