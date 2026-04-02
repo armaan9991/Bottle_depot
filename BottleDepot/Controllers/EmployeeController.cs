@@ -1,5 +1,6 @@
 using BottleDepot.DTO;
 using Microsoft.AspNetCore.Mvc;
+using BottleDepot.Models;
 using MySqlConnector;
 
 namespace BottleDepot.Controllers
@@ -130,6 +131,88 @@ namespace BottleDepot.Controllers
                 await _db.CloseAsync();
             }
         }
-    
+
+        public async Task<IActionResult> Create(CreateEmployeeRequest req)
+        {
+            try
+            {
+                await _db.OpenAsync();
+
+                var qry = new MySqlCommand(@"
+                INSERT INTO EMPLOYEE
+                 (Name, Email, Phone, Role,WageRate, DateOfHire, Password, SupervisorID)
+                VALUES
+                 (@name, @email, @phone, @role,@wage, @date, @password, @supervisorId)", _db);
+
+                qry.Parameters.AddWithValue("@name", req.Name);
+                qry.Parameters.AddWithValue("@email", req.Email);
+                qry.Parameters.AddWithValue("@phone", req.Phone);
+                qry.Parameters.AddWithValue("@role", req.Role);
+                qry.Parameters.AddWithValue("@wage", req.WageRate);
+                qry.Parameters.AddWithValue("@date", req.DateOfHire);
+                qry.Parameters.AddWithValue("@password", req.Password);
+                qry.Parameters.AddWithValue("@supervisorId",req.SupervisorID.HasValue
+                                                                ? req.SupervisorID
+                                                                :DBNull.Value);
+
+                await qry.ExecuteNonQueryAsync();
+
+                return Ok(new {message= "Employee created!!"});
+
+            }
+            catch(Exception e)
+            {
+                return StatusCode(500, new { message=e.Message});
+            }
+            finally
+            {
+                await _db.CloseAsync();
+            }
+        }
+
+         [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id,CreateEmployeeRequest req)
+        {
+            try
+            {
+                await _db.OpenAsync();
+
+                var qry = new MySqlCommand(@"
+                    UPDATE EMPLOYEE
+                    SET
+                        Name         = @name,
+                        Email        = @email,
+                        Phone        = @phone,
+                        Role         = @role,
+                        WageRate     = @wage,
+                        SupervisorID = @supervisorId
+                    WHERE WorkID = @id", _db);
+
+                qry.Parameters.AddWithValue("@name",         req.Name);
+                qry.Parameters.AddWithValue("@email",        req.Email);
+                qry.Parameters.AddWithValue("@phone",        req.Phone);
+                qry.Parameters.AddWithValue("@role",         req.Role);
+                qry.Parameters.AddWithValue("@wage",         req.WageRate);
+                qry.Parameters.AddWithValue("@supervisorId", req.SupervisorID.HasValue
+                                                                 ? req.SupervisorID
+                                                                 : DBNull.Value);
+                qry.Parameters.AddWithValue("@id",           id);
+
+                var rows = await qry.ExecuteNonQueryAsync();
+
+                if (rows == 0)
+                    return NotFound(new { message = "Employee not found" });
+
+                return Ok(new { message = "Employee updated !!" });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { message = e.Message });
+            }
+            finally
+            {
+                await _db.CloseAsync();
+            }
+        }
     }
 }

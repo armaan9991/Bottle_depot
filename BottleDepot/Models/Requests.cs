@@ -6,4 +6,15 @@ namespace BottleDepot.Models
     public string Password{get;set;}
 
     }
+    public class CreateEmployeeRequest
+    {
+        public string Name { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string Role { get; set; }
+        public decimal WageRate { get; set; }
+        public DateTime DateOfHire { get; set; }
+        public string Password { get; set; }
+        public int? SupervisorID { get; set; }
+    }
 }
