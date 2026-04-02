@@ -37,3 +37,22 @@ create table CONTAINER_TYPE(
     Size_of_Container decimal(10,2) not null,
     Material VARCHAR(30) NOT NULL,
 );
+
+
+CREATE TABLE RECYCLE_COMPANY(
+    CompanyID INT  PRIMARY KEY AUTO_INCREMENT,
+    CompanyName VARCHAR(100) NOT NULL,
+    Phone VARCHAR(20) NOT NULL
+);
+
+CREATE Table SCHEDULE(
+    ScheduleID INT PRIMARY KEY AUTO_INCREMENT,
+    ShiftDate DATE NOT NULL,
+    ShiftStart TIME  NOT NULL,
+    ShiftEnd TIME NOT NULL,
+    ShiftDuration DECIMAL(2,2) NOT NULL,
+    IsBusy BOOLEAN NOT NULL,
+    WorkID INT NOT NULL
+    CONSTRAINT fk_schedule
+    Foreign Key (WorkID) REFERENCES EMPLOYEE(WorkID) on delete CASCADE 
+);
