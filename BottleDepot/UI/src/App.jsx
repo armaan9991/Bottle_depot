@@ -1,4 +1,7 @@
 import { Route, Routes } from "react-router-dom";
+import { useAuth } from "./context/AuthContext";
+import Navbar from "./components/Navbar";
+
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -11,73 +14,63 @@ import Reports from "./pages/admin/Reports";
 import EmployeeDashboard from "./pages/employee/EmployeeDashboard";
 import MySchedule from "./pages/employee/MySchedule";
 
-/*
-NEED  TO WRITE ROUTES STILL.
-*/
+export default function App() {
+  const { user } = useAuth();
 
+  return (
+      <div>
+        {/* Conditionally render the Navbar only if a user is logged in */}
+        {user && <Navbar />}
 
+        <Routes>
+          {/* Public Route */}
+          <Route path="/" element={<Login />} />
 
-export default function App(){
-  const {user} = useAuth();
+          {/* Admin Routes */}
+          <Route path="/admin/dashboard" element={
+            <ProtectedRoute role="Admin">
+              <AdminDashBoard />
+            </ProtectedRoute>
+          } />
 
-  return(
-    <div>
-    <Routes>
-      <Route path="/" element={<Login/>} />      /* Route back to login */
-      
-      <Route path="/ " element={                // route to Admin Dashboard  
-        <ProtectedRoute role="Admin">
-          <AdminDashBoard />
-        </ProtectedRoute>
-        }
-      />
+          <Route path="/admin/dailyrecord" element={
+            <ProtectedRoute role="Admin">
+              <DailyRecord />
+            </ProtectedRoute>
+          } />
 
-      <Route path="" element={
-        <ProtectedRoute role="Admin">
-          <DailyRecord/>
-        </ProtectedRoute>
-        }
-      />
+          <Route path="/admin/employees" element={
+            <ProtectedRoute role="Admin">
+              <ManageEmployees />
+            </ProtectedRoute>
+          } />
 
-      <Route path="" element={
-        <ProtectedRoute role="Admin">
-          <ManageEmployees/>
-        </ProtectedRoute>
-        }
-      />
+          <Route path="/admin/shipments" element={
+            <ProtectedRoute role="Admin">
+              <ManageShipments />
+            </ProtectedRoute>
+          } />
 
-      <Route path="" element={
-        <ProtectedRoute role="Admin">
-          <ManageShipments/>
-        </ProtectedRoute>
-        }
-      />
+          <Route path="/admin/reports" element={
+            <ProtectedRoute role="Admin">
+              <Reports />
+            </ProtectedRoute>
+          } />
 
-      <Route path="" element={
-        <ProtectedRoute role="Admin">
-          <Reports/>
-        </ProtectedRoute>
-        }
-      />
+          {/* Employee Routes */}
+          <Route path="/employee/dashboard" element={
+            <ProtectedRoute role="Employee">
+              <EmployeeDashboard />
+            </ProtectedRoute>
+          } />
 
-      <Route path="" element={
-        <ProtectedRoute role="Employee">
-          <EmployeeDashboard/>
-        </ProtectedRoute>
-        }
-      />
+          <Route path="/employee/schedule" element={
+            <ProtectedRoute  role="Employee">
+              <MySchedule />
+            </ProtectedRoute>
+          } />
 
-      <Route path="" element={
-        <ProtectedRoute  role="Employee">
-          <MySchedule/>
-        </ProtectedRoute>
-        }
-      />
-
-    </Routes>      
-      
-    <Login />
-    </div>
-
-  )
+        </Routes>
+      </div>
+  );
 }
