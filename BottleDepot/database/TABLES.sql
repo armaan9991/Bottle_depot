@@ -31,11 +31,11 @@ create table CUSTOMER(
 
 
 create table CONTAINER_TYPE(
-    ContainerTypeID INT PRIMARY KEY AUTO_INCREMENT
-    Refund DECIMAL (10,3) NOT NULL,
+    ContainerTypeID INT PRIMARY KEY AUTO_INCREMENT,
+    Refund DECIMAL (10,3) NOT NULL DEFAULT 0.00,
     CountMethod VARCHAR(50) NOT NULL,
     Size_of_Container decimal(10,2) not null,
-    Material VARCHAR(30) NOT NULL,
+    Material VARCHAR(30) NOT NULL
 );
 
 
@@ -53,7 +53,7 @@ CREATE Table SCHEDULE(
     ShiftEnd TIME NOT NULL,
     ShiftDuration DECIMAL(2,2) NOT NULL,
     IsBusy BOOLEAN NOT NULL,
-    WorkID INT NOT NULL
+    WorkID INT NOT NULL,
     CONSTRAINT fk_schedule
     Foreign Key (WorkID) REFERENCES EMPLOYEE(WorkID) on delete CASCADE 
 );
