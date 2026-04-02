@@ -17,4 +17,15 @@ namespace BottleDepot.Models
         public string Password { get; set; }
         public int? SupervisorID { get; set; }
     }
+
+    public class CreateScheduleRequest
+    {
+        public DateTime ShiftDate { get; set; }
+        public TimeSpan ShiftStart { get; set; }
+        public TimeSpan ShiftEnd { get; set; }
+        public decimal ShiftDuration { get; set; }
+        public bool IsBusy { get; set; }
+        public int WorkID { get; set; }
+    }
+
 }
