@@ -8,4 +8,24 @@ create table person(
     Phone varchar(20) not null
     );
 
-create table
+create table EMPLOYEE(
+        WorkID INT PRIMARY KEY AUTO_INCREMENT,
+        Name VARCHAR(100) NOT NULL,
+        Email VARCHAR(100) not NULL,
+        Phone VARCHAR(100) NOT NULL,
+        Role VARCHAR(40) NOT NULL,
+        WageRate DECIMAL(10,1) NOT NULL,
+        DataOfHire DATE NOT NULL,
+        Password VARCHAR(100) NOT NULL ,
+        supervisorId INT NULL,
+        Constraint fk_supervisiorid
+        Foreign Key (supervisorId) REFERENCES EMPLOYEE(WorkID) on delete set NULL
+);
+
+create table customer(
+    CustomerID int PRIMARY key AUTO_INCREMENT,
+    Name VARCHAR(100) NOT NULL,
+    Phone VARCHAR(20) NOT NULL,
+    Email VARCHAR(100) NOT NULL
+);
+
