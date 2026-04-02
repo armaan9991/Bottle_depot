@@ -77,7 +77,7 @@ CREATE Table Transaction(
     TotalContainers INT NOT NULL,
     CustomerID INT NOT NULL,
     WorkID INT NOT NULL,
-    RecordID int NOT NULL,
+    RecordID INT NOT NULL,
     CONSTRAINT fk_Transaction_emp
     Foreign Key (WorkID) REFERENCES EMPLOYEE(WorkID) on delete RESTRICT,
     CONSTRAINT fk_Transaction_cus
