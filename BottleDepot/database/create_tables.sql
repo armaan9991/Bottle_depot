@@ -29,3 +29,11 @@ create table customer(
     Email VARCHAR(100) NOT NULL
 );
 
+
+create table CONTAINER_TYPE(
+    ContainerTypeID INT PRIMARY KEY AUTO_INCREMENT
+    Refund DECIMAL (10,3) NOT NULL,
+    CountMethod VARCHAR(50) NOT NULL,
+    Size_of_Container decimal(10,2) not null,
+    Material VARCHAR(30) NOT NULL,
+);
