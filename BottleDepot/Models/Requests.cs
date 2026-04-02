@@ -1,5 +1,3 @@
-
-
 namespace BottleDepot.Models
 {
     public class LoginRequest
