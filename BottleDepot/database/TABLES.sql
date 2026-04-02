@@ -84,3 +84,14 @@ CREATE Table Transaction(
     CONSTRAINT fk_Transaction_rec
     Foreign Key (RecordID) REFERENCES DAILY_RECORD(RecordID) on delete RESTRICT
 );
+
+
+create Table SHIPMENT(
+    ShipmentID INT PRIMARY KEY AUTO_INCREMENT,
+    ShipmentDate DATE NOT NULL,
+    TotalValue DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    CompanyID INT NOT NULL,
+    CONSTRAINT fk_shipment
+    Foreign Key (CompanyID) REFERENCES RECYCLE_COMPANY(CompanyID)
+    on delete  RESTRICT
+);
