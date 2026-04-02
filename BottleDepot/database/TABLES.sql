@@ -85,6 +85,37 @@ CREATE Table Transaction(
     Foreign Key (RecordID) REFERENCES DAILY_RECORD(RecordID) on delete RESTRICT
 );
 
+CREATE TABLE TRANSACTION_DETAIL (
+    TransactionDetailID INT   PRIMARY KEY AUTO_INCREMENT,
+    TransactionID     INT    NOT NULL,
+    Quantity    INT    NOT NULL,
+    UnitValue    DECIMAL(2,2) NOT NULL,
+    Value   DECIMAL(5,2) NOT NULL,
+    ContainerTypeID  INT  NOT NULL,
+    CONSTRAINT fk_detail_transaction
+        FOREIGN KEY (TransactionID) REFERENCES TRANSACTION(TransactionID)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_detail_containertype
+        FOREIGN KEY (ContainerTypeID) REFERENCES CONTAINER_TYPE(ContainerTypeID)
+        ON DELETE RESTRICT
+);
+create Table  LABEL(
+    LabelID       INT     PRIMARY KEY AUTO_INCREMENT,
+    Weight        DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    TagDate     DATE      NOT NULL,
+    WorkID    INT     NOT NULL,
+    TransactionID INT       NOT NULL,
+    ShipmentID    INT     NULL,
+    CONSTRAINT fk_label_emp
+        FOREIGN KEY (WorkID)REFERENCES EMPLOYEE(WorkID)
+        ON DELETE RESTRICT,
+    CONSTRAINT fk_label_transaction 
+    FOREIGN KEY (TransactionID) REFERENCES TRANSACTION(TransactionID)
+        ON DELETE RESTRICT,
+    CONSTRAINT fk_label_shipment
+        FOREIGN KEY (ShipmentID) REFERENCES SHIPMENT(ShipmentID)
+        ON DELETE SET NULL
+);
 
 create Table SHIPMENT(
     ShipmentID INT PRIMARY KEY AUTO_INCREMENT,
