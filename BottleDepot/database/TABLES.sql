@@ -1,7 +1,7 @@
 Create database if NOT EXISTS recycling_depot;
 use recycling_depot;
 
-create table person(
+create table PERSON(
 	personID int primary key auto_increment,
     Email varchar(100) Not null,
     Name varchar(100) not null,
@@ -22,7 +22,7 @@ create table EMPLOYEE(
         Foreign Key (supervisorId) REFERENCES EMPLOYEE(WorkID) on delete set NULL
 );
 
-create table customer(
+create table CUSTOMER(
     CustomerID int PRIMARY key AUTO_INCREMENT,
     Name VARCHAR(100) NOT NULL,
     Phone VARCHAR(20) NOT NULL,
@@ -68,4 +68,19 @@ create table DAILY_RECORD(
     CONSTRAINT fk_DailyRecord
     Foreign Key (WorkID) REFERENCES EMPLOYEE(WorkID)
     on delete RESTRICT    
+);
+CREATE Table Transaction(
+    TransactionID INT PRIMARY KEY AUTO_INCREMENT,
+    TransactionDate DATE NOT NULL,
+    Total DECIMAL(10,2)NOT NULL,
+    TotalContainers INT NOT NULL,
+    CustomerID INT NOT NULL,
+    WorkID INT NOT NULL,
+    RecordID int NOT NULL,
+    CONSTRAINT fk_Transaction_emp
+    Foreign Key (WorkID) REFERENCES EMPLOYEE(WorkID) on delete RESTRICT,
+    CONSTRAINT fk_Transaction_cus
+    Foreign Key (CustomerID) REFERENCES CUSTOMER(CustomerID) on delete RESTRICT,
+    CONSTRAINT fk_Transaction_rec
+    Foreign Key (RecordID) REFERENCES DAILY_RECORD(RecordID) on delete RESTRICT
 );
