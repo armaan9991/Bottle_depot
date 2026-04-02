@@ -6,7 +6,7 @@ using MySqlConnector;
 namespace BottleDepot.Controllers
 {
     [ApiController]
-    [Route("")]
+    [Route("api/[controller]")]
     public class EmployeeController : ControllerBase
     {
         public readonly MySqlConnection _db;
