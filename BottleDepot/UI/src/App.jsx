@@ -1,7 +1,8 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import Navbar from "./components/Navbar";
 
+// --- Pages ---
 import Login from "./pages/Login";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -26,7 +27,7 @@ export default function App() {
           {/* Public Route */}
           <Route path="/" element={<Login />} />
 
-          {/* Admin Routes */}
+          {/* --- Admin Routes --- */}
           <Route path="/admin/dashboard" element={
             <ProtectedRoute role="Admin">
               <AdminDashBoard />
@@ -57,7 +58,7 @@ export default function App() {
             </ProtectedRoute>
           } />
 
-          {/* Employee Routes */}
+          {/* --- Employee Routes --- */}
           <Route path="/employee/dashboard" element={
             <ProtectedRoute role="Employee">
               <EmployeeDashboard />
@@ -65,11 +66,13 @@ export default function App() {
           } />
 
           <Route path="/employee/schedule" element={
-            <ProtectedRoute  role="Employee">
+            <ProtectedRoute role="Employee">
               <MySchedule />
             </ProtectedRoute>
           } />
 
+          {/* Catch-all: Send unknown URLs back to Login */}
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
   );
