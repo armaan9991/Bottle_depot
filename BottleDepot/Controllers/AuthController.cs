@@ -1,48 +1,59 @@
+using MySqlConnector;
 using Microsoft.AspNetCore.Mvc;
-
-namespace BottleDepot.Controllers
+namespace BottleDepot.Models
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("")]
     public class AuthController : ControllerBase
     {
-        // POST: api/auth/login
-        [HttpPost("login")]
-        public IActionResult Login([FromBody] LoginRequest request)
-        {
-            //MOCK DATA: This is a temporary check for testing.
-            // Later,will query your Employee/Customer database tables here.
+        private readonly MySqlConnection _db;
+        private readonly IConfiguration _config;
+    
 
-            if (request.WorkId == "admin" && request.Password == "admin123")
-            {
-                // Returns a 200 OK with the JSON data your frontend is expecting
-                return Ok(new 
-                { 
-                    Name = "System Admin", 
-                    Role = "Admin", 
-                    WorkId = request.WorkId 
-                });
-            }
-            
-            if (request.WorkId == "employee" && request.Password == "emp123")
-            {
-                return Ok(new 
-                { 
-                    Name = "Jane Doe", 
-                    Role = "Employee", 
-                    WorkId = request.WorkId 
-                });
-            }
-
-            // Returns a 401 Unauthorized if the credentials don't match
-            return Unauthorized("Invalid Work ID or Password");
+        public AuthController(MySqlConnection db,IConfiguration config){
+           _db=db;
+           _config= config;
         }
-    }
 
-    // A simple class to represent the incoming JSON data from React
-    public class LoginRequest
-    {
-        public string? WorkId { get; set; }
-        public string? Password { get; set; }
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginRequest req){
+            try
+            {
+                await _db.OpenAsync();
+
+                var qry= new MySqlCommand(@"
+                    SELECT WorkID,Name,Email,Role
+                    FROM EMPLOYEE
+                    WHERE WorkID = @workId AND Password = @pass",_db
+                    );
+
+            qry.Parameters.AddWithValue("@workId", req.WorkID);
+            qry.Parameters.AddWithValue("@pass", req.Password);
+
+            var reader = await qry.ExecuteReaderAsync();
+            if(!await reader.ReadAsync())
+                {
+                    return NotFound(new {message="Cant find any employee"});
+                }
+            var workId=reader.GetInt32("WorkId");
+            var name= reader.GetString("Name");
+            var role = reader.GetString("Role");
+            var email= reader.GetString("Email");
+
+
+            return Ok(new
+            {
+                workId,name,role,email
+            });
+            }
+            catch (Exception e)
+            {
+                return StatusCode(404,new {message=e.Message});
+            }
+            finally
+            {
+                await _db.CloseAsync();
+            }
+        }
     }
 }
