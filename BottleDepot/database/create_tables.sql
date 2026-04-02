@@ -46,8 +46,6 @@ CREATE TABLE RECYCLE_COMPANY(
 );
 
 
-
-
 CREATE Table SCHEDULE(
     ScheduleID INT PRIMARY KEY AUTO_INCREMENT,
     ShiftDate DATE NOT NULL,
@@ -58,4 +56,16 @@ CREATE Table SCHEDULE(
     WorkID INT NOT NULL
     CONSTRAINT fk_schedule
     Foreign Key (WorkID) REFERENCES EMPLOYEE(WorkID) on delete CASCADE 
+);
+
+create table DAILY_RECORD(
+    RecordID INT PRIMARY KEY AUTO_INCREMENT,
+    TotalTranscation INT NOT NULL DEFAULT 0,
+    TotalValuePaid DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+    TotalContainer INT NOT NULL DEFAULT 0,
+    RecordDate DATE NOT NULL,
+    WorkID  INT NOT NULL,
+    CONSTRAINT fk_DailyRecord
+    Foreign Key (WorkID) REFERENCES EMPLOYEE(WorkID)
+    on delete RESTRICT    
 );
