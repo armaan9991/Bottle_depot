@@ -11,7 +11,7 @@ using BottleDepot.Models;
 namespace BottleDepot.Controllers
 {
     [ApiController]
-    [Route("")]
+    [Route("api/[controller]")]
     public class CustomerController : ControllerBase
     {
         private readonly MySqlConnection _db;

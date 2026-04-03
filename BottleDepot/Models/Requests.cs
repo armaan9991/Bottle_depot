@@ -35,4 +35,12 @@ namespace BottleDepot.Models
         public int WorkID { get; set; }
     }
 
+    
+    public class CreateShipmentRequest
+    {
+        public int CompanyID { get; set; }
+        public int WorkID { get; set; }
+        public int RecordID { get; set; }
+    }
+
 }
