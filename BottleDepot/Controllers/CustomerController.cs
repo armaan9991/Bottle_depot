@@ -39,7 +39,7 @@ namespace BottleDepot.Controllers
                 {
                     customers.Add(new CustomerDTO
                     {
-                         CustomerID = reader.GetInt32("CustomerID"),
+                        CustomerID = reader.GetInt32("CustomerID"),
                         Name       = reader.GetString("Name"),
                         Email      = reader.GetString("Email"),
                         Phone      = reader.GetString("Phone") 

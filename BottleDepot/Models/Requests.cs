@@ -35,6 +35,22 @@ namespace BottleDepot.Models
         public int WorkID { get; set; }
     }
 
+    public class CreateTransactionRequest
+    {
+        public int CustomerID { get; set; }
+        public int WorkID { get; set; }
+        public int RecordID { get; set; }
+        public decimal Total { get; set; }
+        public int TotalContainers { get; set; }
+        public List<CreateDetailRequest> Details { get; set; }
+    }
+     public class CreateDetailRequest
+    {
+        public int ContainerTypeID { get; set; }
+        public int Quantity { get; set; }
+        public decimal UnitValue { get; set; }
+        public decimal Value { get; set; }
+    }
     
     public class CreateShipmentRequest
     {
