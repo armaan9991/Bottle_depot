@@ -1,27 +1,30 @@
 using MySqlConnector;
+
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddScoped<MySqlConnection>(_ =>
-    new MySqlConnection(
-        builder.Configuration
-               .GetConnectionString("DefaultConnection")));
-
-// Add services to the container.
-
+// controllers
 builder.Services.AddControllers();
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+
+// swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// MySQL connection
+builder.Services.AddScoped<MySqlConnection>(sp =>
+    new MySqlConnection(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// swagger middleware
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
+app.UseHttpsRedirection();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

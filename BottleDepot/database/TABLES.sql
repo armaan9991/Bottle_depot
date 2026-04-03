@@ -152,3 +152,54 @@ ADD COLUMN TotalBags INT NOT NULL DEFAULT 0;
 ALTER TABLE LABEL
 ADD COLUMN Status VARCHAR(20) NOT NULL DEFAULT 'Pending';
 
+
+USE recycling_depot;
+
+INSERT INTO CONTAINER_TYPE (Refund, CountMethod, Size_of_Container, Material)
+VALUES
+    (0.10, 'Count', 0.50, 'PET Plastic'),
+    (0.10, 'Count', 1.00, 'Glass'),
+    (0.10, 'Bag',   0.25, 'Aluminum'),
+    (0.10, 'Bag',   0.25, 'Bi-Metal'),
+    (0.10, 'Bag',   0.25, 'Tetra Pak');
+
+INSERT INTO RECYCLE_COMPANY (CompanyName, Phone)
+VALUES
+    ('Green Loop Recycling', '403-555-0101'),
+    ('EcoReturn Ltd.',       '403-555-0202');
+
+INSERT INTO CUSTOMER (Name, Phone, Email)
+VALUES
+    ('Guest',    '503-555-1001',   'john@email.com'),
+    ('John D.',  '403-555-1001', 'john@email.com'),
+    ('Sarah M.', '403-555-1002', 'sarah@email.com');
+
+INSERT INTO EMPLOYEE
+    (Name, Email, Phone, Role, WageRate, DateOfHire, Password)
+VALUES
+    ('Sara L.', 'sara@depot.com', '403-555-0001',
+     'Admin', 22.00, '2023-01-15', 'admin123');
+
+INSERT INTO EMPLOYEE
+    (Name, Email, Phone, Role, WageRate, DateOfHire, Password, SupervisorID)
+VALUES
+    ('Mike K.', 'mike@depot.com', '403-555-0002',
+     'Employee', 17.00, '2024-03-10', 'emp123', 1),
+    ('Rob J.',  'rob@depot.com',  '403-555-0003',
+     'Employee', 17.00, '2024-06-01', 'emp123', 1);
+
+INSERT INTO SCHEDULE
+    (ShiftDate, ShiftStart, ShiftEnd, ShiftDuration, IsBusy, WorkID)
+VALUES
+    (CURDATE(), '08:00:00', '16:00:00', 8.00, FALSE, 1),
+    (CURDATE(), '09:00:00', '17:00:00', 8.00, TRUE,  2),
+    (CURDATE(), '13:00:00', '21:00:00', 8.00, FALSE, 3);
+
+INSERT INTO DAILY_RECORD
+    (TotalTransaction, TotalValuePaid, TotalContainer,
+     TotalShipments, RecordDate, Status, WorkID)
+VALUES
+    (0, 0.00, 0, 0, CURDATE(), 'Open', 1);
+
+USE recycling_depot;
+SHOW TABLES;
