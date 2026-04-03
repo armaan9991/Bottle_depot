@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BottleDepot.Models
 {
     [ApiController]
-    [Route("")]
+    [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
         private readonly MySqlConnection _db;

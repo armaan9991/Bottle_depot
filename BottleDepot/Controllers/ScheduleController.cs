@@ -121,7 +121,7 @@ namespace BottleDepot.Controllers
         }
 
             [HttpPost]
-        public async Task<IActionResult> Create(CreateScheduleRequest req)
+        public async Task<IActionResult> Create([FromBody]CreateScheduleRequest req)
         {
             try
             {

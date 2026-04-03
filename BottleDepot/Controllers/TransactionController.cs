@@ -218,7 +218,7 @@ namespace BottleDepot.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateTransactionRequest req)
+        public async Task<IActionResult> Create([FromBody]CreateTransactionRequest req)
         {
             try
             {

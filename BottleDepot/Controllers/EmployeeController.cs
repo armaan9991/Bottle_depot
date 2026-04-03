@@ -133,7 +133,7 @@ namespace BottleDepot.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateEmployeeRequest req)
+        public async Task<IActionResult> Create([FromBody] CreateEmployeeRequest req)
         {
             try
             {

@@ -35,7 +35,7 @@ namespace BottleDepot.Controllers
             var customers = new List<CustomerDTO>();
 
             var reader = await qry.ExecuteReaderAsync();
-            while (!await reader.ReadAsync())
+            while (await reader.ReadAsync())
                 {
                     customers.Add(new CustomerDTO
                     {
@@ -58,7 +58,7 @@ namespace BottleDepot.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateCustomerRequest req)
+        public async Task<IActionResult> Create([FromBody] CreateCustomerRequest req)
         {
             try
             {
@@ -82,7 +82,7 @@ namespace BottleDepot.Controllers
             }
             finally
             {
-                _db.CloseAsync();
+                await _db.CloseAsync();
             }
         }
     }

@@ -123,7 +123,7 @@ namespace BottleDepot.Controllers
 
         
         [HttpPost("close")]
-        public async Task<IActionResult> Close( int recordId)
+        public async Task<IActionResult> Close( [FromBody]int recordId)
         {
             try
             {
