@@ -2,8 +2,8 @@ using MySqlConnector;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-var builder = WebApplication.CreateBuilder(args);
 
+var builder = WebApplication.CreateBuilder(args);
 
 // ── MySQL ─────────────────────────────────────────────
 builder.Services.AddScoped<MySqlConnection>(_ =>
@@ -40,41 +40,14 @@ builder.Services
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
-// ── Swagger with JWT support ──────────────────────────
-builder.Services.AddSwaggerGen(options => {
-  options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-{
-    Name = "Authorization",
-    Type = SecuritySchemeType.Http,
-    Scheme = "Bearer",
-    BearerFormat = "JWT",
-    In = ParameterLocation.Header,
-    Description = "Paste your JWT token here"
-});
-    options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-    {
-        {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-            {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
-                {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                    Id   = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
-});
+builder.Services.AddSwaggerGen();    // ← simple, no JWT config
 
 var app = builder.Build();
 
-// ── Middleware order matters ───────────────────────────
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors("AllowReact");
-app.UseAuthentication();   
-app.UseAuthorization();   
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();
