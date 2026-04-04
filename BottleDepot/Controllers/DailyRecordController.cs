@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using BottleDepot.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BottleDepot.Controllers
 {
@@ -15,7 +16,7 @@ namespace BottleDepot.Controllers
             _db = db;
         }
 
-        
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -68,7 +69,7 @@ namespace BottleDepot.Controllers
                 await _db.CloseAsync();
             }
         }
-
+        [Authorize]
         [HttpGet("today")]
         public async Task<IActionResult> GetToday()
         {
@@ -121,7 +122,7 @@ namespace BottleDepot.Controllers
             }
         }
 
-        
+        [Authorize(Roles ="Admin")]
         [HttpPost("close")]
         public async Task<IActionResult> Close( [FromBody]int recordId)
         {

@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using BottleDepot.DTO;
 using BottleDepot.Models;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace BottleDepot.Controllers
 {
@@ -15,6 +17,7 @@ namespace BottleDepot.Controllers
             _db = db;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -63,9 +66,10 @@ namespace BottleDepot.Controllers
             }
          }
 
-         [HttpPost]
+        [Authorize(Roles ="Admin")]
+        [HttpPost]
          public async Task<IActionResult> Create([FromBody]CreateShipmentRequest req)
-        {
+        {   
             try
             {
                 await _db.OpenAsync();
