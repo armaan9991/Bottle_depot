@@ -1,13 +1,12 @@
-using BottleDepot.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
+using BottleDepot.Models;
 
 namespace BottleDepot.Controllers
-{   
+{
     [ApiController]
     [Route("api/[controller]")]
-    public class ContainerTypeController: ControllerBase
+    public class ContainerTypeController : ControllerBase
     {
         private readonly MySqlConnection _db;
 
@@ -16,8 +15,8 @@ namespace BottleDepot.Controllers
             _db = db;
         }
 
-
-        [Authorize]
+        // GET api/containertype
+        // TODO: [Authorize] - any logged in user
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -25,7 +24,7 @@ namespace BottleDepot.Controllers
             {
                 await _db.OpenAsync();
 
-                var qry = new MySqlCommand(@"
+                var cmd = new MySqlCommand(@"
                     SELECT
                         ContainerTypeID,
                         Material,
@@ -35,34 +34,33 @@ namespace BottleDepot.Controllers
                         CountMethod
                     FROM CONTAINER_TYPE
                     ORDER BY ContainerTypeID", _db);
-         
-            var types = new List<ContainerType>();
 
-            var reader = await qry.ExecuteReaderAsync();
+                var types = new List<ContainerType>();
 
-            while (await reader.ReadAsync())
+                using var reader = await cmd.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
                 {
                     types.Add(new ContainerType
                     {
                         ContainerTypeID = reader.GetInt32("ContainerTypeID"),
                         Material        = reader.GetString("Material"),
                         Refund          = reader.GetDecimal("Refund"),
-                        // BagLimit        = reader.GetInt32("BagLimit"),
-                        Size_of_Container    = reader.GetDecimal("Size_of_Container"),
+                        BagLimit        = reader.GetInt32("BagLimit"),
+                        SizeCategory    = reader.GetString("SizeCategory"),
                         CountMethod     = reader.GetString("CountMethod")
                     });
                 }
+
                 return Ok(types);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return StatusCode(500, new { message = e.Message });
+                return StatusCode(500, new { message = ex.Message });
             }
             finally
             {
                 await _db.CloseAsync();
             }
         }
-
     }
 }
