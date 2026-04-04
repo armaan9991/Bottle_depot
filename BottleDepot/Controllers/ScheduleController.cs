@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using BottleDepot.DTO;
 using BottleDepot.Models;
+using Microsoft.AspNetCore.Authorization;
 namespace BottleDepot.Controllers
 {
     [ApiController]
@@ -14,6 +15,7 @@ namespace BottleDepot.Controllers
             _db = db;
         }
 
+        [Authorize(Roles ="Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -65,6 +67,7 @@ namespace BottleDepot.Controllers
                 }
         }
 
+        [Authorize]
         [HttpGet("employee/{workId}")]
         public async Task<IActionResult> GetByEmployee(int workId)
         {
@@ -120,7 +123,8 @@ namespace BottleDepot.Controllers
             }
         }
 
-            [HttpPost]
+        [Authorize(Roles ="Admin")]
+        [HttpPost]
         public async Task<IActionResult> Create([FromBody]CreateScheduleRequest req)
         {
             try

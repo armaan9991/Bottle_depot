@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using BottleDepot.DTO;
 using BottleDepot.Models;
+using Microsoft.AspNetCore.Authorization;
 
 /*here i have two endpoints
     To GETALL  Customers
@@ -20,6 +21,7 @@ namespace BottleDepot.Controllers
             _db = db;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -56,7 +58,7 @@ namespace BottleDepot.Controllers
                 await _db.CloseAsync();
             }
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateCustomerRequest req)
         {
