@@ -2,6 +2,7 @@ using BottleDepot.DTO;
 using Microsoft.AspNetCore.Mvc;
 using BottleDepot.Models;
 using MySqlConnector;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BottleDepot.Controllers
 {
@@ -14,7 +15,7 @@ namespace BottleDepot.Controllers
         {
             _db = db;
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -72,6 +73,7 @@ namespace BottleDepot.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -131,7 +133,7 @@ namespace BottleDepot.Controllers
                 await _db.CloseAsync();
             }
         }
-
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateEmployeeRequest req)
         {
@@ -170,8 +172,9 @@ namespace BottleDepot.Controllers
                 await _db.CloseAsync();
             }
         }
-
-         [HttpPut("{id}")]
+        
+        [Authorize(Roles ="Admin")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id,CreateEmployeeRequest req)
         {
             try
