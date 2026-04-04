@@ -1,5 +1,9 @@
 using MySqlConnector;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 namespace BottleDepot.Models
 {
     [ApiController]
@@ -40,6 +44,7 @@ namespace BottleDepot.Models
             var role = reader.GetString("Role");
             var email= reader.GetString("Email");
 
+            var token = GenerateToken(workId,name,role);
 
             return Ok(new
             {
@@ -54,6 +59,29 @@ namespace BottleDepot.Models
             {
                 await _db.CloseAsync();
             }
+        }
+        private string GenerateToken(int workId, string name, string role)
+        {
+            var key= new SymmetricSecurityKey( Encoding.UTF8.GetBytes(_config["JWT:Key"]!));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+             var claims = new[]
+            {
+                new Claim("workId",        workId.ToString()),
+                new Claim("name",          name),
+                new Claim(ClaimTypes.Role, role)
+            };
+
+            var token = new JwtSecurityToken(
+                issuer:             _config["Jwt:Issuer"],
+                audience:           _config["Jwt:Audience"],
+                claims:             claims,
+                expires:            DateTime.UtcNow.AddHours(1),
+                signingCredentials: creds
+            );
+    
+            return new JwtSecurityTokenHandler().WriteToken(token);
+
         }
     }
 }
