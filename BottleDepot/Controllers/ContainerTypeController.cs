@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MySqlConnector;
 using BottleDepot.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BottleDepot.Controllers
 {
@@ -15,8 +16,7 @@ namespace BottleDepot.Controllers
             _db = db;
         }
 
-        // GET api/containertype
-        // TODO: [Authorize] - any logged in user
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
