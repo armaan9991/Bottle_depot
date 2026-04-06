@@ -20,7 +20,7 @@ namespace BottleDepot.Models
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginRequest req){
+        public async Task<IActionResult> Login([FromBody]LoginRequest req){
             try
             {
                 await _db.OpenAsync();
@@ -48,7 +48,7 @@ namespace BottleDepot.Models
 
             return Ok(new
             {
-                workId,name,role,email
+                workId,name,role,email,token
             });
             }
             catch (Exception e)

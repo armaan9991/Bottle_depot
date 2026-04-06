@@ -3,7 +3,7 @@ import API from "./axios";
 export const loginUser = async (workId, password) => {
     try {
         const response = await API.post('/api/auth/login', {
-            WorkId: workId,
+            WorkID:parseInt(workId),
             Password: password
         });
 

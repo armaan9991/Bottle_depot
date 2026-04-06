@@ -1,0 +1,255 @@
+/* Dashboard.module.css — shared by EmployeeDashboard & AdminDashboard */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --dash-bg:       #f4f6f9;
+  --dash-surface:  #ffffff;
+  --dash-surface2: #f9fafb;
+  --dash-border:   #e5e7eb;
+  --dash-navy:     #1a2232;
+  --dash-accent:   #2f5fc4;
+  --dash-text:     #111827;
+  --dash-muted:    #6b7380;
+  --dash-danger:   #b91c1c;
+  --dash-green:    #166534;
+  --dash-radius:   8px;
+  --dash-sans:     'Inter', sans-serif;
+  --dash-serif:    'Playfair Display', serif;
+}
+
+/* ── Page layout ── */
+.dashPage {
+  min-height: 100vh;
+  background: var(--dash-bg);
+  font-family: var(--dash-sans);
+  color: var(--dash-text);
+  padding: 32px 36px 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.dashHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--dash-border);
+  padding-bottom: 18px;
+  margin-bottom: 28px;
+}
+
+.dashTitle {
+  font-family: var(--dash-serif);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--dash-text);
+  margin: 0 0 3px;
+}
+
+.dashSubtitle {
+  font-size: 13px;
+  color: var(--dash-muted);
+  margin: 0;
+}
+
+.dashSubtitle span {
+  color: var(--dash-text);
+  font-weight: 500;
+}
+
+.dashBadge {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #1e4aa0;
+  background: #eef2fb;
+  border: 1px solid #c9d6f5;
+  border-radius: 20px;
+  padding: 4px 12px;
+}
+
+/* ── Error ── */
+.dashError {
+  font-size: 13px;
+  color: var(--dash-danger);
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--dash-radius);
+  padding: 10px 14px;
+  margin-bottom: 20px;
+}
+
+/* ── Stat cards ── */
+.dashStatsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.dashStatCard {
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius);
+  padding: 18px 20px;
+}
+
+.dashStatLabel {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--dash-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.dashStatValue {
+  font-family: var(--dash-serif);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--dash-text);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.dashStatSub {
+  font-size: 12px;
+  color: var(--dash-muted);
+}
+
+/* ── Content grid ── */
+.dashContentGrid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 18px;
+}
+
+/* ── Panel ── */
+.dashPanel {
+  background: var(--dash-surface);
+  border: 1px solid var(--dash-border);
+  border-radius: var(--dash-radius);
+  overflow: hidden;
+}
+
+.dashPanelHeader {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--dash-border);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--dash-text);
+  background: var(--dash-surface2);
+}
+
+/* ── Table ── */
+.dashTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.dashTable thead th {
+  padding: 10px 18px;
+  text-align: left;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--dash-muted);
+  background: var(--dash-surface2);
+  border-bottom: 1px solid var(--dash-border);
+}
+
+.dashTable tbody tr {
+  border-bottom: 1px solid var(--dash-border);
+  transition: background 0.1s;
+}
+
+.dashTable tbody tr:last-child { border-bottom: none; }
+.dashTable tbody tr:hover { background: var(--dash-surface2); }
+
+.dashTable td {
+  padding: 11px 18px;
+  color: var(--dash-text);
+  vertical-align: middle;
+}
+
+.dashTable td.dashMoney {
+  color: var(--dash-green);
+  font-weight: 500;
+}
+
+.dashTable td.dashMuted { color: var(--dash-muted); }
+
+.dashEmpty {
+  padding: 28px 18px;
+  text-align: center;
+  color: var(--dash-muted);
+  font-size: 13px;
+}
+
+/* ── Employee list ── */
+.dashEmpList { padding: 4px 0; }
+
+.dashEmpRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 18px;
+  border-bottom: 1px solid var(--dash-border);
+  transition: background 0.1s;
+}
+
+.dashEmpRow:last-child { border-bottom: none; }
+.dashEmpRow:hover { background: var(--dash-surface2); }
+
+.dashAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #eef2fb;
+  border: 1px solid #c9d6f5;
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--dash-accent);
+  flex-shrink: 0;
+}
+
+.dashEmpInfo { flex: 1; }
+
+.dashEmpName {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--dash-text);
+}
+
+.dashEmpRole {
+  font-size: 12px;
+  color: var(--dash-muted);
+  margin-top: 1px;
+}
+
+/* ── Status badge ── */
+.dashStatusBadge {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 9px;
+  border-radius: 20px;
+}
+
+.dashStatusBadge.dashRoleAdmin {
+  color: #1e4aa0;
+  background: #eef2fb;
+  border: 1px solid #c9d6f5;
+}
+
+.dashStatusBadge.dashRoleEmployee {
+  color: var(--dash-muted);
+  background: var(--dash-bg);
+  border: 1px solid var(--dash-border);
+}
