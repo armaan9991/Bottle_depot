@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {useNavigate } from 'react-router-dom';
-import { login as loginApi } from '../api/auth';
+import { loginUser as loginApi, loginUser } from '../api/auth';
 
 export default function Login(){
     const[workId,setWorkId]=useState('');
@@ -17,7 +17,7 @@ export default function Login(){
     try{
         var resp= await loginApi(workId,password);
         // login
-        login(resp.data);
+        loginUser(resp.data);
         if (resp.data.role === 'Admin'){
             navigate('/admin/dashboard'); 
         }  
@@ -63,7 +63,7 @@ export default function Login(){
                     </div>
 
                     {error && <p style={styles.error}>{error}</p>}
-                    
+
                     <button
                     type="submit"
                     disabled={loading}
