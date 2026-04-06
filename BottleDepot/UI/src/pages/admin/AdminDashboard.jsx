@@ -1,18 +1,19 @@
+// src/pages/admin/AdminDashboard.jsx
 import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import StatCard from '../../components/StatCard';
 import StatusBadge from '../../components/StatusBadge';
 import { getAllTransactions } from '../../api/transactions';
 import { getAllEmployees } from '../../api/employees';
-// import { getTodayRec ord } from './DailyRecord';
+// import { getTodayRecord } from '../../a  pi/dailyRecords';   
 import styles from '../Dashboard.module.css';
 
 export default function AdminDashboard() {
     const { user } = useAuth();
-    const [record, setRecord]             = useState(null);
-    const [transactions, setTransactions] = useState([]);
-    const [employees, setEmployees]       = useState([]);
-    const [error, setError]               = useState('');
+    const [record, setRecord]               = useState(null);
+    const [transactions, setTransactions]   = useState([]);
+    const [employees, setEmployees]         = useState([]);
+    const [error, setError]                 = useState('');
 
     useEffect(() => { loadData(); }, []);
 
@@ -102,7 +103,7 @@ export default function AdminDashboard() {
                             {transactions.length === 0 ? (
                                 <tr>
                                     <td colSpan="3" className={styles.dashEmpty}>
-                                        No transactions today
+                                        No transactions yet
                                     </td>
                                 </tr>
                             ) : (

@@ -1,255 +1,337 @@
-/* Dashboard.module.css — shared by EmployeeDashboard & AdminDashboard */
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap');
+/* ── Dashboard.module.css ─────────────────────────────── */
+/* Shared by AdminDashboard and EmployeeDashboard          */
 
 :root {
-  --dash-bg:       #f4f6f9;
-  --dash-surface:  #ffffff;
-  --dash-surface2: #f9fafb;
-  --dash-border:   #e5e7eb;
-  --dash-navy:     #1a2232;
-  --dash-accent:   #2f5fc4;
-  --dash-text:     #111827;
-  --dash-muted:    #6b7380;
-  --dash-danger:   #b91c1c;
-  --dash-green:    #166534;
-  --dash-radius:   8px;
-  --dash-sans:     'Inter', sans-serif;
-  --dash-serif:    'Playfair Display', serif;
+    --db-bg:          #f8fafc;
+    --db-surface:     #ffffff;
+    --db-border:      #e2e8f0;
+    --db-text-primary:#0f172a;
+    --db-text-muted:  #64748b;
+    --db-text-faint:  #94a3b8;
+    --db-accent:      #2563eb;
+    --db-accent-soft: #eff6ff;
+    --db-green:       #059669;
+    --db-green-soft:  #ecfdf5;
+    --db-amber:       #d97706;
+    --db-amber-soft:  #fffbeb;
+    --db-red:         #dc2626;
+    --db-red-soft:    #fef2f2;
+    --db-radius:      10px;
+    --db-radius-sm:   6px;
+    --db-shadow:      0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --db-shadow-md:   0 4px 12px rgba(0,0,0,0.08);
+    font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
 }
 
-/* ── Page layout ── */
+/* ── Page wrapper ── */
+.page,
 .dashPage {
-  min-height: 100vh;
-  background: var(--dash-bg);
-  font-family: var(--dash-sans);
-  color: var(--dash-text);
-  padding: 32px 36px 60px;
-  max-width: 1100px;
-  margin: 0 auto;
+    padding: 28px 32px;
+    background: var(--db-bg);
+    min-height: calc(100vh - 48px);
 }
 
+/* ── Page header ── */
+.pageHeader,
 .dashHeader {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  border-bottom: 1px solid var(--dash-border);
-  padding-bottom: 18px;
-  margin-bottom: 28px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
 }
 
+.pageTitle,
 .dashTitle {
-  font-family: var(--dash-serif);
-  font-size: 22px;
-  font-weight: 500;
-  color: var(--dash-text);
-  margin: 0 0 3px;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--db-text-primary);
+    margin: 0 0 4px;
+    letter-spacing: -0.3px;
 }
 
+.pageSubtitle,
 .dashSubtitle {
-  font-size: 13px;
-  color: var(--dash-muted);
-  margin: 0;
+    font-size: 13px;
+    color: var(--db-text-muted);
+    margin: 0;
 }
 
+.pageSubtitle span,
 .dashSubtitle span {
-  color: var(--dash-text);
-  font-weight: 500;
+    color: var(--db-text-primary);
+    font-weight: 500;
 }
 
+/* ── Role badge ── */
+.badge,
 .dashBadge {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: #1e4aa0;
-  background: #eef2fb;
-  border: 1px solid #c9d6f5;
-  border-radius: 20px;
-  padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: var(--db-accent-soft);
+    color: var(--db-accent);
+    border: 1px solid rgba(37,99,235,0.15);
 }
 
-/* ── Error ── */
+/* ── Error banner ── */
+.error,
 .dashError {
-  font-size: 13px;
-  color: var(--dash-danger);
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: var(--dash-radius);
-  padding: 10px 14px;
-  margin-bottom: 20px;
+    font-size: 13px;
+    color: var(--db-red);
+    background: var(--db-red-soft);
+    border: 1px solid rgba(220,38,38,0.15);
+    border-radius: var(--db-radius-sm);
+    padding: 10px 14px;
+    margin-bottom: 20px;
 }
 
-/* ── Stat cards ── */
+/* ── Stat cards grid ── */
+.statsGrid,
 .dashStatsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  gap: 14px;
-  margin-bottom: 28px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
 }
 
+/* ── Stat card ── */
+.statCard,
 .dashStatCard {
-  background: var(--dash-surface);
-  border: 1px solid var(--dash-border);
-  border-radius: var(--dash-radius);
-  padding: 18px 20px;
+    background: var(--db-surface);
+    border: 1px solid var(--db-border);
+    border-radius: var(--db-radius);
+    padding: 18px 20px;
+    box-shadow: var(--db-shadow);
+    transition: box-shadow 0.2s;
 }
 
+.statCard:hover,
+.dashStatCard:hover {
+    box-shadow: var(--db-shadow-md);
+}
+
+.statLabel,
 .dashStatLabel {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--dash-muted);
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--db-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
 }
 
+.statValue,
 .dashStatValue {
-  font-family: var(--dash-serif);
-  font-size: 28px;
-  font-weight: 500;
-  color: var(--dash-text);
-  line-height: 1;
-  margin-bottom: 4px;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--db-text-primary);
+    letter-spacing: -0.5px;
+    line-height: 1;
+    margin-bottom: 4px;
 }
 
+.statSub,
 .dashStatSub {
-  font-size: 12px;
-  color: var(--dash-muted);
+    font-size: 11px;
+    color: var(--db-text-faint);
 }
 
-/* ── Content grid ── */
+/* ── Two column content grid ── */
 .dashContentGrid {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 18px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
 }
 
-/* ── Panel ── */
+/* ── Panel / card ── */
+.panel,
 .dashPanel {
-  background: var(--dash-surface);
-  border: 1px solid var(--dash-border);
-  border-radius: var(--dash-radius);
-  overflow: hidden;
+    background: var(--db-surface);
+    border: 1px solid var(--db-border);
+    border-radius: var(--db-radius);
+    padding: 20px;
+    box-shadow: var(--db-shadow);
 }
 
+.panelHeader,
 .dashPanelHeader {
-  padding: 14px 18px;
-  border-bottom: 1px solid var(--dash-border);
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--dash-text);
-  background: var(--dash-surface2);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--db-text-primary);
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--db-border);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 /* ── Table ── */
+.table,
 .dashTable {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 13px;
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
 }
 
+.table thead th,
 .dashTable thead th {
-  padding: 10px 18px;
-  text-align: left;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--dash-muted);
-  background: var(--dash-surface2);
-  border-bottom: 1px solid var(--dash-border);
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--db-text-faint);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 0 8px 10px;
+    border-bottom: 1px solid var(--db-border);
 }
 
-.dashTable tbody tr {
-  border-bottom: 1px solid var(--dash-border);
-  transition: background 0.1s;
+.table tbody td,
+.dashTable tbody td {
+    padding: 11px 8px;
+    border-bottom: 1px solid var(--db-border);
+    color: var(--db-text-primary);
+    vertical-align: middle;
 }
 
-.dashTable tbody tr:last-child { border-bottom: none; }
-.dashTable tbody tr:hover { background: var(--dash-surface2); }
-
-.dashTable td {
-  padding: 11px 18px;
-  color: var(--dash-text);
-  vertical-align: middle;
+.table tbody tr:last-child td,
+.dashTable tbody tr:last-child td {
+    border-bottom: none;
 }
 
-.dashTable td.dashMoney {
-  color: var(--dash-green);
-  font-weight: 500;
+.table tbody tr:hover td,
+.dashTable tbody tr:hover td {
+    background: #f8fafc;
 }
 
-.dashTable td.dashMuted { color: var(--dash-muted); }
+.muted,
+.dashMuted {
+    color: var(--db-text-muted) !important;
+}
 
+.money,
+.dashMoney {
+    font-weight: 600;
+    color: var(--db-green) !important;
+    font-variant-numeric: tabular-nums;
+}
+
+.empty,
 .dashEmpty {
-  padding: 28px 18px;
-  text-align: center;
-  color: var(--dash-muted);
-  font-size: 13px;
+    text-align: center;
+    color: var(--db-text-faint) !important;
+    padding: 28px 0 !important;
+    font-size: 13px;
 }
 
 /* ── Employee list ── */
-.dashEmpList { padding: 4px 0; }
+.dashEmpList {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
 
 .dashEmpRow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 11px 18px;
-  border-bottom: 1px solid var(--dash-border);
-  transition: background 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--db-border);
 }
 
-.dashEmpRow:last-child { border-bottom: none; }
-.dashEmpRow:hover { background: var(--dash-surface2); }
+.dashEmpRow:last-child {
+    border-bottom: none;
+}
 
 .dashAvatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #eef2fb;
-  border: 1px solid #c9d6f5;
-  display: grid;
-  place-items: center;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--dash-accent);
-  flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--db-accent-soft);
+    color: var(--db-accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    border: 1.5px solid rgba(37,99,235,0.15);
 }
 
-.dashEmpInfo { flex: 1; }
+.dashEmpInfo {
+    flex: 1;
+    min-width: 0;
+}
 
 .dashEmpName {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--dash-text);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--db-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .dashEmpRole {
-  font-size: 12px;
-  color: var(--dash-muted);
-  margin-top: 1px;
+    font-size: 11px;
+    color: var(--db-text-faint);
+    margin-top: 1px;
 }
 
 /* ── Status badge ── */
 .dashStatusBadge {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  padding: 3px 9px;
-  border-radius: 20px;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
 }
 
-.dashStatusBadge.dashRoleAdmin {
-  color: #1e4aa0;
-  background: #eef2fb;
-  border: 1px solid #c9d6f5;
+.dashRoleAdmin {
+    background: var(--db-accent-soft);
+    color: var(--db-accent);
+    border: 1px solid rgba(37,99,235,0.15);
 }
 
-.dashStatusBadge.dashRoleEmployee {
-  color: var(--dash-muted);
-  background: var(--dash-bg);
-  border: 1px solid var(--dash-border);
+.dashRoleEmployee {
+    background: var(--db-green-soft);
+    color: var(--db-green);
+    border: 1px solid rgba(5,150,105,0.15);
+}
+
+/* ── 3-col stats grid (employee) ── */
+.statsGrid3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .statsGrid,
+    .dashStatsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .dashContentGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .statsGrid,
+    .dashStatsGrid,
+    .statsGrid3 {
+        grid-template-columns: 1fr;
+    }
+
+    .page,
+    .dashPage {
+        padding: 16px;
+    }
 }

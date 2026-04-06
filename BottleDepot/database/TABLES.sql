@@ -174,3 +174,5 @@ INSERT INTO DAILY_RECORD
  TotalShipments, RecordDate, Status, WorkID)
 VALUES
     (0, 0.00, 0, 0, CURDATE(), 'Open', 1);
+
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'BottleDepot2026!';

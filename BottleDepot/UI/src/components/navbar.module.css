@@ -1,0 +1,109 @@
+
+
+.navbar {
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    height: 52px;
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+}
+
+.brand {
+    font-size: 16px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.3px;
+    margin-right: 32px;
+    white-space: nowrap;
+}
+
+.brand span {
+    color: #2563eb;
+}
+
+.links {
+    display: flex;
+    gap: 2px;
+    flex: 1;
+}
+
+.navLink {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    background: none;
+    color: #64748b;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, color 0.15s;
+    white-space: nowrap;
+}
+
+.navLink:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.navLinkActive {
+    background: #eff6ff;
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.userName {
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.badge {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badgeAdmin {
+    background: #eff6ff;
+    color: #2563eb;
+    border: 1px solid rgba(37,99,235,0.15);
+}
+
+.badgeEmployee {
+    background: #ecfdf5;
+    color: #059669;
+    border: 1px solid rgba(5,150,105,0.15);
+}
+
+.logoutBtn {
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid #e2e8f0;
+    background: #ffffff;
+    color: #374151;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.logoutBtn:hover {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+}

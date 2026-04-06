@@ -31,16 +31,16 @@ export default function Login() {
 
                 <div className={styles.loginPanel}>
                     <div>
-                        <div className={styles.loginBrand}>RecycleOps</div>
-                        <div className={styles.loginTagline}>Employee management portal</div>
+                        <div className={styles.loginBrand}>Bottle Depot</div>
+                        <div className={styles.loginTagline}>Management Portal</div>
                     </div>
-                    <div className={styles.loginCopyright}>© 2026 RecycleOps</div>
+                    <div className={styles.loginCopyright}>© 2026 BMDS</div>
                 </div>
 
                 <div className={styles.loginForm}>
                     <div className={styles.loginEyebrow}>Employee portal</div>
                     <h1 className={styles.loginTitle}>Welcome back</h1>
-                    <p className={styles.loginSubtitle}>Sign in to access your dashboard</p>
+                    <p className={styles.loginSubtitle}>Sign in to  your dashboard</p>
 
                     <form onSubmit={handleLogin}>
                         <div className={styles.loginField}>
