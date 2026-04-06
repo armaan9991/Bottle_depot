@@ -7,24 +7,26 @@ export default function Login(){
     const[password,setPassword]=useState('')
      const [loading,setLoading]=useState('')
     // const {login} = UseAuth();
+    const [error, setError]       = useState('');
     const navigate=useNavigate();
 
     const handlelogin = async (e) => {
     e.preventDefault();
+    setError('');
     setLoading(true);
     try{
         var resp= await loginApi(workId,password);
         // login
         login(resp.data);
         if (resp.data.role === 'Admin'){
-            navigate('/')   // add route to admin..
-        }
+            navigate('/admin/dashboard'); 
+        }  
         else{
-            navigate('') // add route to employee
+            navigate('/employee/dashboard'); 
         }
     }
     catch(err){
-    
+        setError('Invalid Employee ID or password');
     }
     finally{
         setLoading(false);
@@ -60,6 +62,8 @@ export default function Login(){
                         />
                     </div>
 
+                    {error && <p style={styles.error}>{error}</p>}
+                    
                     <button
                     type="submit"
                     disabled={loading}
