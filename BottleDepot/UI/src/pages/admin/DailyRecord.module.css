@@ -1,0 +1,142 @@
+/* ── DailyRecord.module.css ───────────────────────────── */
+
+.drPage {
+    padding: 28px 32px;
+    background: #f8fafc;
+    min-height: calc(100vh - 52px);
+    font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+}
+
+.drHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.drTitle {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px;
+    letter-spacing: -0.3px;
+}
+
+.drSubtitle { font-size: 13px; color: #64748b; margin: 0; }
+
+.drStatusBadge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.drStatusOpen   { background: #fffbeb; color: #d97706; border: 1px solid rgba(217,119,6,0.2); }
+.drStatusClosed { background: #f1f5f9; color: #64748b; border: 1px solid rgba(100,116,139,0.2); }
+
+.drStatsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.drStatCard {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.drStatLabel {
+    font-size: 11px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+}
+
+.drStatValue {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    line-height: 1;
+}
+
+.drPanel {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.drInfoGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-bottom: 24px;
+}
+
+.drInfoRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 11px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 13px;
+}
+
+.drInfoLabel { color: #64748b; }
+.drInfoValue { font-weight: 600; color: #0f172a; }
+
+.drWarningBox {
+    background: #fffbeb;
+    border: 1px solid rgba(217,119,6,0.2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #92400e;
+    margin-bottom: 16px;
+    line-height: 1.5;
+}
+
+.drCloseBtn {
+    padding: 11px 24px;
+    background: #dc2626;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.drCloseBtn:hover { background: #b91c1c; }
+.drCloseBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.drLockedBox {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.drError {
+    font-size: 12px;
+    color: #dc2626;
+    background: #fef2f2;
+    border: 1px solid rgba(220,38,38,0.15);
+    border-radius: 6px;
+    padding: 9px 13px;
+    margin-bottom: 16px;
+}
+
+.drLoading { padding: 40px; text-align: center; color: #94a3b8; font-size: 14px; }

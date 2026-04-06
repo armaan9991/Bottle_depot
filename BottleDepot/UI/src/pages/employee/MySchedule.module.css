@@ -1,0 +1,90 @@
+/* ── MySchedule.module.css ────────────────────────────── */
+
+.schPage {
+    padding: 28px 32px;
+    background: #f8fafc;
+    min-height: calc(100vh - 52px);
+    font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+}
+
+.schHeader { margin-bottom: 24px; }
+
+.schTitle {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px;
+    letter-spacing: -0.3px;
+}
+
+.schSubtitle { font-size: 13px; color: #64748b; margin: 0; }
+
+.schPanel {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.schTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.schTable thead th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 12px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.schTable tbody td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #0f172a;
+    vertical-align: middle;
+}
+
+.schTable tbody tr:last-child td { border-bottom: none; }
+.schTable tbody tr:hover td { background: #f8fafc; }
+
+.schDateCell {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+
+.schDateMain { font-weight: 600; color: #0f172a; }
+.schDateSub  { font-size: 11px; color: #94a3b8; }
+
+.schTimeRange {
+    font-variant-numeric: tabular-nums;
+    color: #374151;
+}
+
+.schDuration {
+    font-weight: 600;
+    color: #0f172a;
+    font-variant-numeric: tabular-nums;
+}
+
+.schBadgeBusy      { font-size:10px; font-weight:600; padding:3px 9px; border-radius:20px; background:#fef2f2; color:#dc2626; border:1px solid rgba(220,38,38,0.15); text-transform:uppercase; letter-spacing:.04em; }
+.schBadgeAvailable { font-size:10px; font-weight:600; padding:3px 9px; border-radius:20px; background:#ecfdf5; color:#059669; border:1px solid rgba(5,150,105,0.15); text-transform:uppercase; letter-spacing:.04em; }
+.schBadgeToday     { font-size:10px; font-weight:600; padding:3px 9px; border-radius:20px; background:#eff6ff; color:#2563eb; border:1px solid rgba(37,99,235,0.15); text-transform:uppercase; letter-spacing:.04em; }
+
+.schEmpty { text-align:center; color:#94a3b8; padding:40px 0; font-size:13px; }
+
+.schError {
+    font-size:12px; color:#dc2626;
+    background:#fef2f2; border:1px solid rgba(220,38,38,0.15);
+    border-radius:6px; padding:9px 13px; margin-bottom:16px;
+}
+
+.schTodayRow td { background: #f0f7ff !important; }

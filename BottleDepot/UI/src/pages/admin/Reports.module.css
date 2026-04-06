@@ -1,0 +1,115 @@
+/* ── Reports.module.css ───────────────────────────────── */
+
+.repPage {
+    padding: 28px 32px;
+    background: #f8fafc;
+    min-height: calc(100vh - 52px);
+    font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+}
+
+.repTitle {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px;
+    letter-spacing: -0.3px;
+}
+
+.repSubtitle { font-size: 13px; color: #64748b; margin: 0 0 24px; }
+
+.repStatsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.repStatCard {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.repStatLabel {
+    font-size: 11px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+}
+
+.repStatValue {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+    line-height: 1;
+}
+
+.repGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.repPanel {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.repPanelHead {
+    padding: 14px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0f172a;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    background: #f8fafc;
+}
+
+.repTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.repTable thead th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 10px 16px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.repTable tbody td {
+    padding: 11px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #0f172a;
+}
+
+.repTable tbody tr:last-child td { border-bottom: none; }
+.repTable tbody tr:hover td { background: #f8fafc; }
+
+.repMuted  { color: #64748b; }
+.repMoney  { font-weight: 600; color: #059669; font-variant-numeric: tabular-nums; }
+
+.repStatusOpen   { font-size:10px; font-weight:600; padding:3px 8px; border-radius:20px; background:#fffbeb; color:#d97706; border:1px solid rgba(217,119,6,0.15); }
+.repStatusClosed { font-size:10px; font-weight:600; padding:3px 8px; border-radius:20px; background:#ecfdf5; color:#059669; border:1px solid rgba(5,150,105,0.15); }
+
+.repEmpty { text-align:center; color:#94a3b8; padding:28px 0; font-size:13px; }
+
+.repError {
+    font-size: 12px; color: #dc2626;
+    background: #fef2f2; border: 1px solid rgba(220,38,38,0.15);
+    border-radius: 6px; padding: 9px 13px; margin-bottom: 16px;
+}

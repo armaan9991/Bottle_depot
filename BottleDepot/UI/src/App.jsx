@@ -1,15 +1,16 @@
-import { Route, Routes, Navigate } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
-import Navbar from "./components/Navbar";
-import Login from "./pages/Login";
-import ProtectedRoute from "./components/ProtectedRoute";
-import AdminDashboard from "./pages/admin/AdminDashboard";
-import DailyRecord from "./pages/admin/DailyRecord";
-import ManageShipments from "./pages/admin/ManageShipments";
-import ManageEmployees from "./pages/admin/ManageEmployees";
-import Reports from "./pages/admin/Reports";
-import EmployeeDashboard from "./pages/employee/EmployeeDashboard";
-import MySchedule from "./pages/employee/MySchedule";
+import { Route, Routes, Navigate } from 'react-router-dom';
+import { useAuth } from './context/AuthContext';
+import Navbar from './components/Navbar';
+import Login from './pages/Login';
+import ProtectedRoute from './components/ProtectedRoute';
+import AdminDashboard from './pages/admin/AdminDashboard';
+import DailyRecord from './pages/admin/DailyRecord';
+import ManageShipments from './pages/admin/ManageShipments';
+import ManageEmployees from './pages/admin/ManageEmployees';
+import Reports from './pages/admin/Reports';
+import EmployeeDashboard from './pages/employee/EmployeeDashboard';
+import MySchedule from './pages/employee/MySchedule';
+import TransactionForm from './pages/TransactionForm';
 
 export default function App() {
     const { user } = useAuth();
@@ -19,8 +20,17 @@ export default function App() {
             {user && <Navbar />}
 
             <Routes>
+                {/* Public */}
                 <Route path="/" element={<Login />} />
 
+                {/* Shared — both roles can create transactions */}
+                <Route path="/transaction/new" element={
+                    <ProtectedRoute role={user?.role}>
+                        <TransactionForm />
+                    </ProtectedRoute>
+                } />
+
+                {/* Admin routes */}
                 <Route path="/admin/dashboard" element={
                     <ProtectedRoute role="Admin">
                         <AdminDashboard />
@@ -46,6 +56,8 @@ export default function App() {
                         <Reports />
                     </ProtectedRoute>
                 } />
+
+                {/* Employee routes */}
                 <Route path="/employee/dashboard" element={
                     <ProtectedRoute role="Employee">
                         <EmployeeDashboard />
@@ -57,6 +69,7 @@ export default function App() {
                     </ProtectedRoute>
                 } />
 
+                {/* Catch-all */}
                 <Route path="*" element={<Navigate to="/" />} />
             </Routes>
         </div>

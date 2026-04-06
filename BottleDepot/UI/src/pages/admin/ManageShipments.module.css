@@ -1,0 +1,199 @@
+/* ── ManageShipments.module.css ───────────────────────── */
+
+.shipPage {
+    padding: 28px 32px;
+    background: #f8fafc;
+    min-height: calc(100vh - 52px);
+    font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+}
+
+.shipHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+}
+
+.shipTitle {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px;
+    letter-spacing: -0.3px;
+}
+
+.shipSubtitle { font-size: 13px; color: #64748b; margin: 0; }
+
+.shipNewBtn {
+    padding: 9px 18px;
+    background: #0f172a;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.shipNewBtn:hover { background: #1e293b; }
+
+.shipFormWrap {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    overflow: hidden;
+}
+
+.shipFormHead {
+    padding: 14px 20px;
+    border-bottom: 1px solid #e2e8f0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.shipFormHeadTitle { font-size: 13px; font-weight: 600; color: #0f172a; }
+
+.shipFormBody { padding: 20px; }
+
+.shipFormGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.shipFormField { display: flex; flex-direction: column; gap: 5px; }
+
+.shipFormField label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.shipFormField input,
+.shipFormField select {
+    padding: 10px 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #0f172a;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    appearance: none;
+}
+
+.shipFormField input:focus,
+.shipFormField select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+    background: #fff;
+}
+
+.shipCreateBtn {
+    padding: 9px 20px;
+    background: #2563eb;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.shipCreateBtn:hover { background: #1d4ed8; }
+.shipCreateBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.shipTablePanel {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
+.shipTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.shipTable thead th {
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+.shipTable tbody td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #0f172a;
+}
+
+.shipTable tbody tr:last-child td { border-bottom: none; }
+.shipTable tbody tr:hover td { background: #f8fafc; }
+
+.shipIdBadge {
+    font-size: 12px;
+    font-weight: 700;
+    color: #2563eb;
+    background: #eff6ff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-variant-numeric: tabular-nums;
+}
+
+.shipMoney { font-weight: 600; color: #059669; font-variant-numeric: tabular-nums; }
+.shipMuted { color: #64748b; }
+
+.shipError {
+    font-size: 12px;
+    color: #dc2626;
+    background: #fef2f2;
+    border: 1px solid rgba(220,38,38,0.15);
+    border-radius: 6px;
+    padding: 9px 13px;
+    margin-bottom: 16px;
+}
+
+.shipSuccess {
+    font-size: 12px;
+    color: #059669;
+    background: #ecfdf5;
+    border: 1px solid rgba(5,150,105,0.15);
+    border-radius: 6px;
+    padding: 9px 13px;
+    margin-bottom: 16px;
+}
+
+.shipEmpty {
+    text-align: center;
+    color: #94a3b8;
+    padding: 32px 0;
+    font-size: 13px;
+}
+
+.shipCancelBtn {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #94a3b8;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+.shipCancelBtn:hover { color: #0f172a; background: #f1f5f9; }

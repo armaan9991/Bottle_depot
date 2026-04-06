@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { getAllCustomers } from '../api/customers';
-import { getAllContainerTypes } from '../api/containerTypes';
+// import { getAllCustomers } from '../api/customers';
+// import { getAllContainerTypes } from '../api/containerTypes';
 // import { getTodayRecord } from '../api/dailyRecords';
 import { createTransaction } from '../api/transactions';
-import styles from './TransactionForm.module.css';
+import styles from './Transaction.module.css';
 
 export default function TransactionForm() {
     const { user }   = useAuth();
@@ -28,7 +28,7 @@ export default function TransactionForm() {
 
     useEffect(() => {
         Promise.all([
-            getAllCustomers(),
+            // getAllCustomers(),
             getAllContainerTypes(),
             getTodayRecord(),
         ]).then(([cRes, ctRes, recRes]) => {
