@@ -13,19 +13,25 @@ CREATE TABLE PERSON(
                        Phone varchar(20) not null
 );
 
+
 CREATE TABLE EMPLOYEE(
-                         WorkID INT PRIMARY KEY AUTO_INCREMENT,
-                         Name VARCHAR(100) NOT NULL,
-                         Email VARCHAR(100) not NULL,
-                         Phone VARCHAR(100) NOT NULL,
-                         Role VARCHAR(40) NOT NULL,
-                         WageRate DECIMAL(10,1) NOT NULL,
-                         DateOfHire DATE NOT NULL,
-                         Password VARCHAR(100) NOT NULL ,
-                         supervisorId INT NULL,
-                         Constraint fk_supervisiorid
-                             Foreign Key (supervisorId) REFERENCES EMPLOYEE(WorkID) on delete set NULL
+    WorkID INT PRIMARY KEY AUTO_INCREMENT,
+    EmployeeCode VARCHAR(10) UNIQUE,
+    Name VARCHAR(100) NOT NULL,
+    Email VARCHAR(100) NOT NULL,
+    Phone VARCHAR(100) NOT NULL,
+    Role VARCHAR(40) NOT NULL,
+    WageRate DECIMAL(10,1) NOT NULL,
+    DateOfHire DATE NOT NULL,
+    Password VARCHAR(100) NOT NULL,
+    SupervisorID INT NULL,
+    CONSTRAINT fk_supervisorid
+        FOREIGN KEY (SupervisorID)
+        REFERENCES EMPLOYEE(WorkID)
+        ON DELETE SET NULL
 );
+
+
 
 CREATE TABLE CUSTOMER(
                          CustomerID int PRIMARY key AUTO_INCREMENT,
@@ -175,4 +181,5 @@ INSERT INTO DAILY_RECORD
 VALUES
     (0, 0.00, 0, 0, CURDATE(), 'Open', 1);
 
-ALTER USER 'root'@'localhost' IDENTIFIED BY 'BottleDepot2026!';
+
+SHOW DATABASE RECYCLE_COMPANY;
