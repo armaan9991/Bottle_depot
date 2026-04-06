@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 // import { getTodayRecord, closeRecord } from '../../api/dailyRecords';
 import StatCard from '../../components/StatCard';
-import styles from './DailyRecord.module.css';
+// import styles from './DailyRecord.module.css';
 
 export default function DailyRecord() {
     const [record,  setRecord]  = useState(null);

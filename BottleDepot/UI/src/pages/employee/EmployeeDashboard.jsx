@@ -4,12 +4,14 @@ import { useAuth } from '../../context/AuthContext';
 import StatCard from '../../components/StatCard';
 import { getTransactionsByEmployee } from '../../api/transactions';
 import styles from '../Dashboard.module.css';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function EmployeeDashboard() {
     const { user } = useAuth();
     const [transactions, setTransactions] = useState([]);
     const [error, setError] = useState('');
 
+    const navigate = useNavigate();
     useEffect(() => {
         if (user?.workId) {
             getTransactionsByEmployee(user.workId)
@@ -38,6 +40,9 @@ export default function EmployeeDashboard() {
 
             {/* Stat cards */}
             <div className={styles.statsGrid}>
+                <button onClick={() => navigate('/transaction/new')}>
+                + New transaction
+                </button>
                 <StatCard
                     label="My Transactions"
                     value={transactions.length}
