@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { logoutUser } from "../api/auth";
 import path from "path";
 
-const Navbar= () => {
+export default  function Navbar(){
     const { user , logout } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
