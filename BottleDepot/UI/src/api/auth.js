@@ -12,6 +12,8 @@ export const loginUser = async (workId, password) => {
             localStorage.setItem('jwt_token', response.data.token);
         }
 
+        localStorage.setItem('user', JSON.stringify(response.data));
+
         return response.data;
     } catch (error) {
         throw error;
@@ -21,4 +23,5 @@ export const loginUser = async (workId, password) => {
 
 export const logoutUser = () => {
     localStorage.removeItem('jwt_token');
+    localStorage.removeItem('user');
 };
