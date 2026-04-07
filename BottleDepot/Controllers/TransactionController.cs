@@ -162,9 +162,9 @@ namespace BottleDepot.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles ="Admin,Employee")]
         [HttpGet("employee/{workId}")]
-        public async Task<IActionResult> GetByEmployee(int workId)
+        public async Task<IActionResult>  GetTransactionsByEmployee(int workId)
         {
             try
             {
