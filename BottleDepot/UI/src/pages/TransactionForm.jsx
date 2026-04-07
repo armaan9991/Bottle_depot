@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-// import { getAllCustomers } from '../api/customers';
-// import { getAllContainerTypes } from '../api/containerTypes';
-// import { getTodayRecord } from '../api/dailyRecords';
+import { getAllCustomers } from '../api/Customers';
+import { getAllContainerTypes } from '../api/Containertypes';
+import { getTodayRecord } from '../api/Dailyrecords';
 import { createTransaction } from '../api/transactions';
 import styles from './Transaction.module.css';
 
@@ -22,20 +22,26 @@ export default function TransactionForm() {
         { containerTypeID: '', quantity: '', unitValue: 0, value: 0 }
     ]);
 
+    // create new customer.
+    const [showCustomerModal, setShowCustomerModal] = useState(false);
+const [newCustomerName, setNewCustomerName] = useState('');
+const [newCustomerEmail, setNewCustomerEmail] = useState('');
+const [creatingCustomer, setCreatingCustomer] = useState(false);
+
     const [error,   setError]   = useState('');
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         Promise.all([
-            // getAllCustomers(),
+            getAllCustomers(),
             getAllContainerTypes(),
             getTodayRecord(),
         ]).then(([cRes, ctRes, recRes]) => {
-            setCustomers(cRes.data);
-            setContainerTypes(ctRes.data);
-            setTodayRecord(recRes.data);
-        }).catch(() => setError('Failed to load form data. Is the backend running?'));
+    setCustomers(cRes);
+    setContainerTypes(ctRes);
+    setTodayRecord(recRes);
+}).catch(() => setError('Failed to load form data. Is the backend running?'));
     }, []);
 
     // ── line item helpers ──
@@ -94,7 +100,8 @@ export default function TransactionForm() {
                     value:           parseFloat(l.value.toFixed(2)),
                 })),
             };
-
+            console.log("USER:", user);
+            console.log("PAYLOAD:", payload);
             await createTransaction(payload);
             setSuccess('Transaction created successfully!');
 
