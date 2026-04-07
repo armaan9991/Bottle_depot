@@ -30,7 +30,7 @@ const Navbar = () => {
     return (
         <nav className={styles.navbar}>
             <span className={styles.brand}>
-                Recycle<span>Ops</span>
+                Bottle<span>Depot</span>
             </span>
 
             <div className={styles.links}>
