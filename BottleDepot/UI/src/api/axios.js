@@ -9,13 +9,17 @@ API.interceptors.request.use(
     (config) => {
 
         const token = localStorage.getItem('jwt_token');
-
+        console.log("TOKEN FROM STORAGE:", token);
+           
         if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
+            config.headers.Authorization = `Bearer ${token}`;
         }
+        console.log("HEADERS:", config.headers);
+
         return config;
     },
     (error) => {
+        console.log("rejected here!")
         return Promise.reject(error);
     }
 );

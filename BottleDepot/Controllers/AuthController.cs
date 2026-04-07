@@ -62,7 +62,7 @@ namespace BottleDepot.Models
         }
         private string GenerateToken(int workId, string name, string role)
         {
-            var key= new SymmetricSecurityKey( Encoding.UTF8.GetBytes(_config["JWT:Key"]!));
+            var key= new SymmetricSecurityKey( Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
              var claims = new[]

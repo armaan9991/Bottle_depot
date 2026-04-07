@@ -16,6 +16,9 @@ export default function Login() {
         setLoading(true);
         try {
             const resp = await loginApi(workId, password);
+            localStorage.setItem("jwt_token", resp.token);
+            localStorage.setItem("user", JSON.stringify(resp));
+
             if (resp.role === 'Admin') navigate('/admin/dashboard');
             else                       navigate('/employee/dashboard');
         } catch {

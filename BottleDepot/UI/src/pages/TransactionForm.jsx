@@ -37,10 +37,10 @@ const [creatingCustomer, setCreatingCustomer] = useState(false);
             getAllCustomers(),
             getAllContainerTypes(),
             getTodayRecord(),
-        ]).then(([cRes, ctRes, recRes]) => {
-    setCustomers(cRes);
-    setContainerTypes(ctRes);
-    setTodayRecord(recRes);
+       ]).then(([cRes, ctRes, recRes]) => {
+    setCustomers(cRes.data);
+    setContainerTypes(ctRes.data);
+    setTodayRecord(recRes.data);
 }).catch(() => setError('Failed to load form data. Is the backend running?'));
     }, []);
 

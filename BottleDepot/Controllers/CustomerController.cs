@@ -76,7 +76,15 @@ namespace BottleDepot.Controllers
 
                 await qry.ExecuteNonQueryAsync();
 
-                return Ok(new {message="new customer created!"});    
+                 var createdCustomer = new CustomerDTO
+        {
+            CustomerID = (int)qry.LastInsertedId,
+            Name = req.Name,
+            Email = req.Email,
+            Phone = req.Phone
+        };
+
+        return Ok(createdCustomer);
             }
             catch (Exception e)
             {

@@ -25,7 +25,7 @@ export default function App() {
 
                 {/* Shared — both roles can create transactions */}
                 <Route path="/transaction/new" element={
-                    <ProtectedRoute role={user?.role}>
+                    <ProtectedRoute >
                         <TransactionForm />
                     </ProtectedRoute>
                 } />

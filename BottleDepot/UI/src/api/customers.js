@@ -25,7 +25,7 @@ export const createCustomer = async (customerData) => {
         console.log(customerData);
         const response = await API.post('/api/Customer', customerData);
         console.log(response)
-        return response;
+        return response.data;
     } catch (error) {
         console.error("Error creating customer:", error);
         throw error;
