@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { loginUser as loginApi } from '../api/auth';
 import styles from './Login.module.css';
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
     const [workId, setWorkId]     = useState('');
@@ -9,6 +10,7 @@ export default function Login() {
     const [loading, setLoading]   = useState(false);
     const [error, setError]       = useState('');
     const navigate = useNavigate();
+    const {login} = useAuth();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -16,11 +18,12 @@ export default function Login() {
         setLoading(true);
         try {
             const resp = await loginApi(workId, password);
+            login(resp);
             localStorage.setItem("jwt_token", resp.token);
             localStorage.setItem("user", JSON.stringify(resp));
 
-            if (resp.role === 'Admin') navigate('/admin/dashboard');
-            else                       navigate('/employee/dashboard');
+            if (resp.role === 'Admin') navigate('/admin/dashboard',{replace : true});
+            else                       navigate('/employee/dashboard',{replace:true});
         } catch {
             setError('Invalid Employee ID or password');
         } finally {

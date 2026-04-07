@@ -32,17 +32,21 @@ const [creatingCustomer, setCreatingCustomer] = useState(false);
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
 
-    useEffect(() => {
-        Promise.all([
-            getAllCustomers(),
-            getAllContainerTypes(),
-            getTodayRecord(),
-       ]).then(([cRes, ctRes, recRes]) => {
-    setCustomers(cRes.data);
-    setContainerTypes(ctRes.data);
-    setTodayRecord(recRes.data);
-}).catch(() => setError('Failed to load form data. Is the backend running?'));
-    }, []);
+  useEffect(() => {
+    if (!user) return;
+
+    Promise.all([
+        getAllCustomers(),
+        getAllContainerTypes(),
+        getTodayRecord(),
+    ])
+        .then(([cRes, ctRes, recRes]) => {
+            setCustomers(cRes.data);
+            setContainerTypes(ctRes.data);
+            setTodayRecord(recRes.data);
+        })
+        .catch(() => setError("Failed to load form data."));
+}, [user]);
 
     // ── line item helpers ──
     const addLine = () =>
