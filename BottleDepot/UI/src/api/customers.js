@@ -22,7 +22,9 @@ export const getCustomerById = async (id) => {
 
 export const createCustomer = async (customerData) => {
     try {
+        console.log(customerData);
         const response = await API.post('/api/Customer', customerData);
+        console.log(response)
         return response;
     } catch (error) {
         console.error("Error creating customer:", error);

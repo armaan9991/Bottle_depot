@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { getAllCustomers } from '../api/Customers';
+import { getAllCustomers,createCustomer } from '../api/Customers';
 import { getAllContainerTypes } from '../api/Containertypes';
 import { getTodayRecord } from '../api/Dailyrecords';
 import { createTransaction } from '../api/transactions';
@@ -69,6 +69,37 @@ const [creatingCustomer, setCreatingCustomer] = useState(false);
             return updated;
         });
     };
+
+    const handleCreateCustomer = async () => {
+    if (!newCustomerName) {
+        setError('Customer name is required');
+        return;
+    }
+
+    setCreatingCustomer(true);
+
+    try {
+        const created = await createCustomer({
+            name: newCustomerName,
+            email: newCustomerEmail
+        });
+
+        // update dropdown instantly
+        setCustomers(prev => [...prev, created]);
+
+        // auto-select new customer
+        setCustomerID(created.customerID.toString());
+
+        // reset modal
+        setShowCustomerModal(false);
+        setNewCustomerName('');
+        setNewCustomerEmail('');
+    } catch {
+        setError('Failed to create customer');
+    } finally {
+        setCreatingCustomer(false);
+    }
+};
 
     // ── computed totals ──
     const totalContainers = lines.reduce((s, l) => s + (parseInt(l.quantity) || 0), 0);
@@ -149,18 +180,28 @@ const [creatingCustomer, setCreatingCustomer] = useState(false);
                                 <div className={styles.txnFormRow}>
                                     <div className={styles.txnField}>
                                         <label>Customer</label>
-                                        <select
-                                            value={customerID}
-                                            onChange={e => setCustomerID(e.target.value)}
-                                            required
-                                        >
-                                            <option value="">Select customer…</option>
-                                            {customers.map(c => (
-                                                <option key={c.customerID} value={c.customerID}>
-                                                    {c.name}
-                                                </option>
-                                            ))}
-                                        </select>
+                                            <div style={{ display: 'flex', gap: '8px' }}>
+                                             <select
+                                                  value={customerID}
+                                                  onChange={e => setCustomerID(e.target.value)}
+                                                     required
+                                                     style={{ flex: 1 }}
+                                                  >
+                                                   <option value="">Select customer…</option>
+                                                   {customers.map(c => (
+                                                       <option key={c.customerID} value={c.customerID}>
+                                                           {c.name}
+                                                       </option>
+                                                   ))}
+                                               </select>
+
+                                               <button
+                                                   type="button"
+                                                   onClick={() => setShowCustomerModal(true)}
+                                               >
+                                                   + New
+                                               </button>
+                                           </div>
                                     </div>
                                     <div className={styles.txnField}>
                                         <label>Processed by</label>
@@ -317,7 +358,7 @@ const [creatingCustomer, setCreatingCustomer] = useState(false);
                             >
                                 {loading ? 'Processing…' : 'Complete transaction'}
                             </button>
-
+                            
                             <button
                                 type="button"
                                 onClick={() => navigate(-1)}
@@ -334,6 +375,54 @@ const [creatingCustomer, setCreatingCustomer] = useState(false);
                     </div>
                 </div>
             </form>
+            {showCustomerModal && (
+    <div className={styles.modalOverlay}>
+        <div className={styles.modal}>
+            <h3>Add Customer</h3>
+
+            <input
+                type="text"
+                placeholder="Customer name"
+                value={newCustomerName}
+                onChange={(e) => setNewCustomerName(e.target.value)}
+            />
+
+            <input
+                type="email"
+                placeholder="Email (optional)"
+                value={newCustomerEmail}
+                onChange={(e) => setNewCustomerEmail(e.target.value)}
+            />
+
+            <div
+                style={{
+                    display: 'flex',
+                    gap: '10px',
+                    marginTop: '12px'
+                }}
+            >
+                <button
+                    type="button"
+                    onClick={handleCreateCustomer}
+                    disabled={creatingCustomer}
+                >
+                    {creatingCustomer ? 'Saving…' : 'Save'}
+                </button>
+
+                <button
+                    type="button"
+                    onClick={() => {
+                        setShowCustomerModal(false);
+                        setNewCustomerName('');
+                        setNewCustomerEmail('');
+                    }}
+                >
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+)}
         </div>
     );
 }
