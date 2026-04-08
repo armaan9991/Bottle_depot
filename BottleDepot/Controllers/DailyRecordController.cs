@@ -27,9 +27,9 @@ namespace BottleDepot.Controllers
                 var cmd = new MySqlCommand(@"
                     SELECT
                         dr.RecordID,
-                        dr.TotalTransactions,
-                        dr.TotalValuePaidOut,
-                        dr.TotalContainers,
+                        dr.TotalTransaction,
+                        dr.TotalValuePaid,
+                        dr.TotalContainer,
                         dr.TotalShipments,
                         dr.RecordDate,
                         dr.Status,
@@ -47,9 +47,9 @@ namespace BottleDepot.Controllers
                     records.Add(new DailyRecordDTO
                     {
                         RecordID          = reader.GetInt32("RecordID"),
-                        TotalTransactions = reader.GetInt32("TotalTransactions"),
-                        TotalValuePaidOut = reader.GetDecimal("TotalValuePaidOut"),
-                        TotalContainers   = reader.GetInt32("TotalContainers"),
+                        TotalTransactions = reader.GetInt32("TotalTransaction"),
+                        TotalValuePaidOut = reader.GetDecimal("TotalValuePaid"),
+                        TotalContainers   = reader.GetInt32("TotalContainer"),
                         TotalShipments    = reader.GetInt32("TotalShipments"),
                         RecordDate        = reader.GetDateTime("RecordDate"),
                         Status            = reader.GetString("Status"),
@@ -80,9 +80,9 @@ namespace BottleDepot.Controllers
                 var cmd = new MySqlCommand(@"
                     SELECT
                         dr.RecordID,
-                        dr.TotalTransactions,
-                        dr.TotalValuePaidOut,
-                        dr.TotalContainers,
+                        dr.TotalTransaction,
+                        dr.TotalValuePaid,
+                        dr.TotalContainer,
                         dr.TotalShipments,
                         dr.RecordDate,
                         dr.Status,
@@ -100,9 +100,9 @@ namespace BottleDepot.Controllers
                 var record = new DailyRecordDTO
                 {
                     RecordID          = reader.GetInt32("RecordID"),
-                    TotalTransactions = reader.GetInt32("TotalTransactions"),
-                    TotalValuePaidOut = reader.GetDecimal("TotalValuePaidOut"),
-                    TotalContainers   = reader.GetInt32("TotalContainers"),
+                    TotalTransactions = reader.GetInt32("TotalTransaction"),
+                    TotalValuePaidOut = reader.GetDecimal("TotalValuePaid"),
+                    TotalContainers   = reader.GetInt32("TotalContainer"),
                     TotalShipments    = reader.GetInt32("TotalShipments"),
                     RecordDate        = reader.GetDateTime("RecordDate"),
                     Status            = reader.GetString("Status"),

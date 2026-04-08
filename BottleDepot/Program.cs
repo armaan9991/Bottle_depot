@@ -14,7 +14,7 @@ builder.Services.AddScoped<MySqlConnection>(_ =>
 // ── CORS ──────────────────────────────────────────────
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowReact", policy =>
-        policy.WithOrigins("http://localhost:5173")
+        policy.WithOrigins("http://localhost:5173", "http://localhost:5174")
               .AllowAnyHeader()
               .AllowAnyMethod());
 });
@@ -23,6 +23,8 @@ builder.Services.AddCors(options => {
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
+        options.UseSecurityTokenValidators = true;
+        options.MapInboundClaims = false;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer           = true,
@@ -33,7 +35,9 @@ builder.Services
             ValidAudience            = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey         = new SymmetricSecurityKey(
                                            Encoding.UTF8.GetBytes(
-                                               builder.Configuration["Jwt:Key"]!))
+                                               builder.Configuration["Jwt:Key"]!)),
+            RoleClaimType            = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
+            NameClaimType            = "name"
         };
     });
 

@@ -5,7 +5,7 @@ import StatCard from '../../components/StatCard';
 import StatusBadge from '../../components/StatusBadge';
 import { getAllTransactions } from '../../api/transactions';
 import { getAllEmployees } from '../../api/employees';
-// import { getTodayRecord } from '../../a  pi/dailyRecords';   
+import { getTodayRecord } from '../../api/dailyrecords';
 import styles from '../Dashboard.module.css';
 
 export default function AdminDashboard() {
@@ -25,8 +25,8 @@ export default function AdminDashboard() {
                 getAllEmployees(),
             ]);
             setRecord(recRes.data);
-            setTransactions(txnRes.data.slice(0, 5));
-            setEmployees(empRes.data);
+            setTransactions((txnRes || []).slice(0, 5));
+            setEmployees(empRes || []);
         } catch (e) {
             setError('Failed to load dashboard data');
             console.error(e);

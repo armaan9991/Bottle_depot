@@ -19,6 +19,27 @@ namespace BottleDepot.Models
            _config= config;
         }
 
+        [HttpPost("test-token")]
+        public IActionResult TestToken([FromBody] string token)
+        {
+            try {
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+                var handler = new JwtSecurityTokenHandler();
+                handler.ValidateToken(token, new TokenValidationParameters {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = false,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = _config["Jwt:Issuer"],
+                    ValidAudience = _config["Jwt:Audience"],
+                    IssuerSigningKey = key
+                }, out _);
+                return Ok(new { valid = true });
+            } catch (Exception ex) {
+                return Ok(new { valid = false, error = ex.Message });
+            }
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody]LoginRequest req){
             try

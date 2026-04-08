@@ -27,7 +27,7 @@ namespace BottleDepot.Controllers
                 var cmd = new MySqlCommand(@"
                     SELECT
                         t.TransactionID,
-                        t.Date,
+                        t.TransactionDate,
                         t.Total,
                         t.TotalContainers,
                         t.CustomerID,
@@ -38,7 +38,7 @@ namespace BottleDepot.Controllers
                     FROM TRANSACTION t
                     JOIN CUSTOMER  c ON t.CustomerID = c.CustomerID
                     JOIN EMPLOYEE  e ON t.WorkID     = e.WorkID
-                    ORDER BY t.Date DESC", _db);
+                    ORDER BY t.TransactionDate DESC", _db);
 
                 var transactions = new List<TransactionDTO>();
                 using var reader = await cmd.ExecuteReaderAsync();
@@ -48,7 +48,7 @@ namespace BottleDepot.Controllers
                     transactions.Add(new TransactionDTO
                     {
                         TransactionID   = reader.GetInt32("TransactionID"),
-                        Date            = reader.GetDateTime("Date"),
+                        Date            = reader.GetDateTime("TransactionDate"),
                         Total           = reader.GetDecimal("Total"),
                         TotalContainers = reader.GetInt32("TotalContainers"),
                         CustomerID      = reader.GetInt32("CustomerID"),
@@ -83,7 +83,7 @@ namespace BottleDepot.Controllers
                 var cmd = new MySqlCommand(@"
                     SELECT
                         t.TransactionID,
-                        t.Date,
+                        t.TransactionDate,
                         t.Total,
                         t.TotalContainers,
                         t.CustomerID,
@@ -173,7 +173,7 @@ namespace BottleDepot.Controllers
                 var cmd = new MySqlCommand(@"
                     SELECT
                         t.TransactionID,
-                        t.Date,
+                        t.TransactionDate,
                         t.Total,
                         t.TotalContainers,
                         t.CustomerID,
@@ -185,7 +185,7 @@ namespace BottleDepot.Controllers
                     JOIN CUSTOMER c ON t.CustomerID = c.CustomerID
                     JOIN EMPLOYEE e ON t.WorkID     = e.WorkID
                     WHERE t.WorkID = @workId
-                    ORDER BY t.Date DESC", _db);
+                    ORDER BY t.TransactionDate DESC", _db);
 
                 cmd.Parameters.AddWithValue("@workId", workId);
 
@@ -197,7 +197,7 @@ namespace BottleDepot.Controllers
                     transactions.Add(new TransactionDTO
                     {
                         TransactionID   = reader.GetInt32("TransactionID"),
-                        Date            = reader.GetDateTime("Date"),
+                        Date            = reader.GetDateTime("TransactionDate"),
                         Total           = reader.GetDecimal("Total"),
                         TotalContainers = reader.GetInt32("TotalContainers"),
                         CustomerID      = reader.GetInt32("CustomerID"),
