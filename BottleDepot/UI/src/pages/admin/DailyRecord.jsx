@@ -1,54 +1,73 @@
 import { useState, useEffect } from 'react';
 import { getTodayRecord, closeRecord } from '../../api/dailyrecords';
-import StatCard from '../../components/StatCard';
 import styles from './DailyRecord.module.css';
 
 export default function DailyRecord() {
     const [record,  setRecord]  = useState(null);
     const [error,   setError]   = useState('');
     const [loading, setLoading] = useState(false);
+    const [initial, setInitial] = useState(true);
 
     useEffect(() => { load(); }, []);
 
     const load = async () => {
+        setError('');
         try {
             const res = await getTodayRecord();
             setRecord(res.data);
-        } catch {
-            setError('No daily record found for today. Create one first.');
+        } catch (err) {
+            const msg = err?.response?.data?.message;
+            setRecord(null);
+            setError(msg || 'No daily record found for today.');
+        } finally {
+            setInitial(false);
         }
     };
 
     const handleClose = async () => {
-        if (!window.confirm('Close today\'s record? This cannot be undone.')) return;
+        if (!window.confirm("Close today's record? This cannot be undone.")) return;
         setLoading(true);
         setError('');
         try {
+            // Controller: POST /api/DailyRecord/close  [FromBody] int recordId
             await closeRecord(record.recordID);
             await load();
-        } catch {
-            setError('Failed to close the daily record.');
+        } catch (err) {
+            const msg = err?.response?.data?.message;
+            setError(msg || 'Failed to close the daily record.');
         } finally {
             setLoading(false);
         }
     };
 
-    if (!record) return (
-        <div className={styles.drPage}>
-            <p className={styles.drLoading}>{error || 'Loading daily record…'}</p>
-        </div>
-    );
+    if (initial) {
+        return (
+            <div className={styles.drPage}>
+                <p className={styles.drLoading}>Loading daily record…</p>
+            </div>
+        );
+    }
+
+    if (!record) {
+        return (
+            <div className={styles.drPage}>
+                <p className={styles.drLoading}>{error}</p>
+            </div>
+        );
+    }
 
     const isOpen = record.status === 'Open';
 
     return (
         <div className={styles.drPage}>
+
+            {/* ── Header ── */}
             <div className={styles.drHeader}>
                 <div>
                     <h2 className={styles.drTitle}>Daily record</h2>
                     <p className={styles.drSubtitle}>
                         {new Date(record.recordDate).toLocaleDateString('en-CA', {
-                            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
                         })}
                         {' · '}Logged by {record.employeeName}
                     </p>
@@ -80,7 +99,7 @@ export default function DailyRecord() {
                 </div>
             </div>
 
-            {/* ── Record details + action ── */}
+            {/* ── Detail panel ── */}
             <div className={styles.drPanel}>
                 <div className={styles.drInfoGrid}>
                     <div className={styles.drInfoRow}>
@@ -124,6 +143,7 @@ export default function DailyRecord() {
                     </div>
                 )}
             </div>
+
         </div>
     );
 }

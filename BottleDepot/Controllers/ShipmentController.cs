@@ -85,13 +85,12 @@ namespace BottleDepot.Controllers
                 cmd.Parameters.AddWithValue("@workId",    req.WorkID);
                 cmd.Parameters.AddWithValue("@recordId",  req.RecordID);
 
-                using var reader = await cmd.ExecuteReaderAsync();
-                await reader.ReadAsync();
-                var newId = reader.GetInt32("NewShipmentID");
+                await cmd.ExecuteNonQueryAsync();
+              
 
                 return Ok(new {
                     message    = "Shipment created successfully",
-                    shipmentId = newId
+                    // shipmentId = newId
                 });
             }
             catch (Exception r)
@@ -103,5 +102,42 @@ namespace BottleDepot.Controllers
                 await _db.CloseAsync();
             }
         }
+
+        [Authorize]
+[HttpGet("companies")]
+public async Task<IActionResult> GetAllCompanies()
+{
+    try
+    {
+        await _db.OpenAsync();
+
+        var cmd = new MySqlCommand(@"
+            SELECT CompanyID, CompanyName
+            FROM RECYCLE_COMPANY
+            ORDER BY CompanyName ASC", _db);
+
+        var companies = new List<RecycleCompanyDTO>();
+        using var reader = await cmd.ExecuteReaderAsync();
+
+        while (await reader.ReadAsync())
+        {
+            companies.Add(new RecycleCompanyDTO
+            {
+                CompanyID   = reader.GetInt32("CompanyID"),
+                CompanyName = reader.GetString("CompanyName"),
+            });
+        }
+
+        return Ok(companies);
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, new { message = ex.Message });
+    }
+    finally
+    {
+        await _db.CloseAsync();
+    }
+}
     }
 }

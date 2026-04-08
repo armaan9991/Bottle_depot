@@ -3,8 +3,7 @@ import API from "./axios";
 // GET: /api/Shipment
 export const getAllShipments = async () => {
     try {
-        const response = await API.get('/api/Shipment');
-        return response.data;
+        return await API.get('/api/Shipment');      // returns full axios response → caller uses .data
     } catch (error) {
         console.error("Error fetching shipments:", error);
         throw error;
@@ -12,13 +11,20 @@ export const getAllShipments = async () => {
 };
 
 // POST: /api/Shipment (Admin only)
-// Payload expects CreateShipmentRequest format
 export const createShipment = async (shipmentData) => {
     try {
-        const response = await API.post('/api/Shipment', shipmentData);
-        return response.data;
+        return await API.post('/api/Shipment', shipmentData);
     } catch (error) {
         console.error("Error creating shipment:", error);
+        throw error;
+    }
+};
+
+export const getAllCompanies = async () => {
+    try {
+        return await API.get('/api/Shipment/companies');
+    } catch (error) {
+        console.error("Error fetching companies:", error);
         throw error;
     }
 };
