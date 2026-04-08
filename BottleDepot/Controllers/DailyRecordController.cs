@@ -90,12 +90,12 @@ namespace BottleDepot.Controllers
                         e.Name AS EmployeeName
                     FROM DAILY_RECORD dr
                     JOIN EMPLOYEE e ON dr.WorkID = e.WorkID
-                    WHERE dr.RecordDate = CURDATE()", _db);
+                    WHERE DATE(dr.RecordDate) = CURDATE()", _db);
 
                 using var reader = await cmd.ExecuteReaderAsync();
 
                 if (!await reader.ReadAsync())
-                    return NotFound(new { message = "No record found for today" });
+                     return Ok(null);
 
                 var record = new DailyRecordDTO
                 {
