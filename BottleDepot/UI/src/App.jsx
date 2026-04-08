@@ -11,6 +11,7 @@ import Reports from './pages/admin/Reports';
 import EmployeeDashboard from './pages/employee/EmployeeDashboard';
 import MySchedule from './pages/employee/MySchedule';
 import TransactionForm from './pages/TransactionForm';
+import ManageSchedule from './pages/admin/ManageSchedule';
 
 export default function App() {
     const { user } = useAuth();
@@ -68,6 +69,11 @@ export default function App() {
                         <MySchedule />
                     </ProtectedRoute>
                 } />
+                <Route path="/admin/schedule" element={
+                     <ProtectedRoute role="Admin">
+                        <ManageSchedule />
+                    </ProtectedRoute>
+                    } />
 
                 {/* Catch-all */}
                 <Route path="*" element={<Navigate to="/" />} />

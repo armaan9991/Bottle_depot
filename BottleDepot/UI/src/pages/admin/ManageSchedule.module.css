@@ -1,0 +1,262 @@
+/* src/pages/admin/ManageSchedule.module.css */
+
+.schPage {
+    padding: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* ── Header ── */
+.schHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 28px;
+}
+
+.schTitle {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px;
+}
+
+.schSubtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+.schAddBtn {
+    padding: 9px 18px;
+    background: #0f172a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.schAddBtn:hover { background: #1e293b; }
+
+.schError {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: #dc2626;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+/* ── Form ── */
+.schFormWrap {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    overflow: hidden;
+}
+
+.schFormHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    background: #f8fafc;
+}
+
+.schFormHeadTitle {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.schFormCancelBtn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #94a3b8;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 4px;
+}
+.schFormCancelBtn:hover { color: #475569; }
+
+.schFormBody {
+    padding: 20px;
+}
+
+.schFormGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.schFormField {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.schFormField label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.schFormField input,
+.schFormField select {
+    padding: 8px 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #0f172a;
+    background: #fff;
+    outline: none;
+    transition: border-color 0.15s;
+    font-family: inherit;
+}
+.schFormField input:focus,
+.schFormField select:focus {
+    border-color: #94a3b8;
+}
+
+.schDurationPreview {
+    padding: 8px 12px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.schFormActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.schCancelBtn {
+    padding: 9px 16px;
+    background: none;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #64748b;
+    cursor: pointer;
+    font-family: inherit;
+}
+.schCancelBtn:hover { background: #f8fafc; }
+
+.schSaveBtn {
+    padding: 9px 20px;
+    background: #0f172a;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.15s;
+}
+.schSaveBtn:hover:not(:disabled) { background: #1e293b; }
+.schSaveBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ── Table ── */
+.schTablePanel {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.schTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.schTable thead {
+    background: #f8fafc;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.schTable th {
+    padding: 11px 16px;
+    text-align: left;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #94a3b8;
+}
+
+.schTable td {
+    padding: 13px 16px;
+    border-bottom: 1px solid #f1f5f9;
+    color: #0f172a;
+}
+
+.schTable tbody tr:last-child td { border-bottom: none; }
+.schTable tbody tr:hover { background: #f8fafc; }
+
+.schMuted { color: #64748b !important; }
+
+.schNameCell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.schAvatar {
+    width: 30px;
+    height: 30px;
+    background: #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    color: #475569;
+    flex-shrink: 0;
+}
+
+.schDuration {
+    font-variant-numeric: tabular-nums;
+    color: #475569;
+}
+
+.schEmpty {
+    text-align: center;
+    color: #94a3b8;
+    padding: 40px !important;
+    font-size: 14px;
+}
+
+/* ── Badges ── */
+.schBadgeBusy,
+.schBadgeFree {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.schBadgeBusy {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.schBadgeFree {
+    background: #f0fdf4;
+    color: #16a34a;
+}

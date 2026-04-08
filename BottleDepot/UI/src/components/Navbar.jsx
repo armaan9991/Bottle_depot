@@ -17,6 +17,7 @@ const Navbar = () => {
         { label: 'Employees',    path: '/admin/employees'   },
         { label: 'Shipments',    path: '/admin/shipments'   },
         { label: 'Daily record', path: '/admin/dailyrecord' },
+        {label :'ManageSchedule', path: '/admin/schedule'   },
         { label: 'Reports',      path: '/admin/reports'     },
     ];
 
