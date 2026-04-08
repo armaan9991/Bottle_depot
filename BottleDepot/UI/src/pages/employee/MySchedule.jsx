@@ -29,7 +29,7 @@ export default function MySchedule() {
     useEffect(() => {
         if (user?.workId) {
             getScheduleByEmployee(user.workId)
-                .then(res => setSchedules(res.data))
+                .then(res => setSchedules(res))
                 .catch(() => setError('Failed to load schedule'));
         }
     }, [user]);

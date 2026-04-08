@@ -20,7 +20,7 @@ export default function ManageEmployees() {
     const load = async () => {
         try {
             const res = await getAllEmployees();
-            setEmployees(res.data);
+            setEmployees(res);
         } catch { setError('Failed to load employees'); }
     };
 

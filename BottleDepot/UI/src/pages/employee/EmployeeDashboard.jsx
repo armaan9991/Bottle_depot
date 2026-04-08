@@ -15,7 +15,7 @@ export default function EmployeeDashboard() {
     useEffect(() => {
         if (user?.workId) {
             getTransactionsByEmployee(user.workId)
-                .then(res => setTransactions(res.data))
+                .then(res => setTransactions(res))
                 .catch(() => setError('Failed to load transactions'));
         }
     }, [user]);
