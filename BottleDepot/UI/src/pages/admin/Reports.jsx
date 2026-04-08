@@ -1,6 +1,6 @@
 // src/pages/admin/Reports.jsx
 import { useState, useEffect } from 'react';
-import { getAllRecords } from '../../api/dailyRecords';
+import { getAllRecords } from '../../api/dailyrecords';
 import { getAllShipments } from '../../api/shipments';
 import styles from './Reports.module.css';
 
@@ -12,8 +12,8 @@ export default function Reports() {
     useEffect(() => {
         Promise.all([getAllRecords(), getAllShipments()])
             .then(([r, s]) => {
-                setRecords(r.data);
-                setShipments(s.data);
+                setRecords(r);
+                setShipments(s);
             })
             .catch(() => setError('Failed to load report data'));
     }, []);

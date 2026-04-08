@@ -183,3 +183,81 @@ VALUES
 
 
 SHOW DATABASE RECYCLE_COMPANY;
+
+-- =========================
+-- Sample Data for Testing
+-- =========================
+
+-- 1. EMPLOYEES (Already added one admin + 2 employees, let's add 2 more)
+INSERT INTO EMPLOYEE
+(Name, Email, Phone, Role, WageRate, DateOfHire, Password, SupervisorID)
+VALUES
+    ('Alice P.', 'alice@depot.com', '403-555-0004', 'Employee', 18.00, '2024-01-20', 'emp123', 1),
+    ('Bob R.',   'bob@depot.com',   '403-555-0005', 'Employee', 18.50, '2024-02-15', 'emp123', 1);
+
+-- 2. DAILY RECORDS (Add more records for multiple employees)
+INSERT INTO DAILY_RECORD
+(TotalTransaction, TotalValuePaid, TotalContainer, TotalShipments, RecordDate, Status, WorkID)
+VALUES
+    (5, 12.50, 10, 0, CURDATE(), 'Open', 2),
+    (3, 7.80, 5, 0, CURDATE(), 'Open', 3),
+    (6, 15.20, 12, 1, CURDATE(), 'Open', 4),
+    (4, 10.00, 8, 0, CURDATE(), 'Open', 5);
+
+-- 3. TRANSACTIONS (for DAILY_RECORDs)
+INSERT INTO TRANSACTION
+(TransactionDate, Total, TotalContainers, CustomerID, WorkID, RecordID)
+VALUES
+    (CURDATE(), 2.50, 2, 1, 2, 2),
+    (CURDATE(), 5.00, 4, 2, 2, 2),
+    (CURDATE(), 1.80, 1, 3, 3, 3),
+    (CURDATE(), 3.20, 3, 1, 4, 4),
+    (CURDATE(), 4.50, 4, 2, 5, 5);
+
+-- 4. TRANSACTION_DETAIL (linking transactions to container types)
+INSERT INTO TRANSACTION_DETAIL
+(TransactionID, Quantity, UnitValue, Value, ContainerTypeID)
+VALUES
+    (1, 2, 1.25, 2.50, 1),
+    (2, 4, 1.25, 5.00, 2),
+    (3, 1, 1.80, 1.80, 3),
+    (4, 3, 1.07, 3.20, 4),
+    (5, 4, 1.125, 4.50, 5);
+
+-- 5. SHIPMENTS
+INSERT INTO SHIPMENT
+(ShipmentDate, TotalValue, TotalBags, CompanyID)
+VALUES
+    (CURDATE(), 12.50, 5, 1),
+    (CURDATE(), 15.00, 6, 2);
+
+-- 6. LABELS (linking transactions & shipments)
+INSERT INTO LABEL
+(Weight, TagDate, WorkID, TransactionID, ShipmentID, Status)
+VALUES
+    (1.5, CURDATE(), 2, 1, 1, 'Pending'),
+    (2.0, CURDATE(), 2, 2, 1, 'Processed'),
+    (1.0, CURDATE(), 3, 3, 2, 'Pending'),
+    (1.7, CURDATE(), 4, 4, 2, 'Processed'),
+    (2.3, CURDATE(), 5, 5, NULL, 'Pending');
+
+-- 7. OPTIONAL: Update DAILY_RECORD totals to match transactions
+UPDATE DAILY_RECORD dr
+SET dr.TotalTransaction = (
+        SELECT COUNT(*) FROM TRANSACTION t WHERE t.RecordID = dr.RecordID
+    ),
+    dr.TotalValuePaid = (
+        SELECT COALESCE(SUM(Total),0) FROM TRANSACTION t WHERE t.RecordID = dr.RecordID
+    ),
+    dr.TotalContainer = (
+        SELECT COALESCE(SUM(TotalContainers),0) FROM TRANSACTION t WHERE t.RecordID = dr.RecordID
+    );
+
+-- Check the data
+SELECT * FROM EMPLOYEE;
+SELECT * FROM CUSTOMER;
+SELECT * FROM DAILY_RECORD;
+SELECT * FROM TRANSACTION;
+SELECT * FROM TRANSACTION_DETAIL;
+SELECT * FROM SHIPMENT;
+SELECT * FROM LABEL;

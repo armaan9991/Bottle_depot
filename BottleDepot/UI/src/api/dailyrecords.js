@@ -3,7 +3,7 @@ import API from "./axios";
 export const getAllRecords = async () => {
     try {
         const response = await API.get('/api/DailyRecord');
-        return response;
+        return response.data;
     } catch (error) {
         console.error("Error fetching daily records:", error);
         throw error;

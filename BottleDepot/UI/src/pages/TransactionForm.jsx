@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { getAllCustomers,createCustomer } from '../api/Customers';
+import { getAllCustomers,createCustomer } from '../api/customers';
 import { getAllContainerTypes } from '../api/Containertypes';
-import { getTodayRecord } from '../api/Dailyrecords';
+import { getTodayRecord } from '../api/dailyrecords';
 import { createTransaction } from '../api/transactions';
 import styles from './Transaction.module.css';
 

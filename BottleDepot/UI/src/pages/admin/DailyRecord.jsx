@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getTodayRecord, closeRecord } from '../../api/dailyRecords';
+import { getTodayRecord, closeRecord } from '../../api/dailyrecords';
 import StatCard from '../../components/StatCard';
 import styles from './DailyRecord.module.css';
 
