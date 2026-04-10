@@ -182,7 +182,7 @@ VALUES
     (0, 0.00, 0, 0, CURDATE(), 'Open', 1);
 
 
-SHOW DATABASE RECYCLE_COMPANY;
+SELECT * FROM RECYCLE_COMPANY;
 
 -- =========================
 -- Sample Data for Testing
