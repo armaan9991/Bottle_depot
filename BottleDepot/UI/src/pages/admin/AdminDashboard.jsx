@@ -24,7 +24,33 @@ export default function AdminDashboard() {
                 getAllTransactions(),
                 getAllEmployees(),
             ]);
-            setRecord(recRes.data);
+
+            // 1. Fix the .data trap: Safely grab the payload
+            let recordData = recRes?.data ? recRes.data : recRes;
+
+            // 2. Safely wrap it in an array so we can process it 
+            // (Just in case the backend returns an array of all employee records for the day)
+            let recordsArray = Array.isArray(recordData) ? recordData : [recordData];
+
+            let globalStats = {
+                txns: 0,
+                paid: 0,
+                containers: 0,
+                shipments: 0
+            };
+
+            // 3. Aggregate the totals with fallbacks for property name mismatches
+            recordsArray.forEach(r => {
+                if (r) {
+                    globalStats.txns += (r.totalTransactions || r.totalTransaction || 0);
+                    globalStats.paid += (r.totalValuePaidOut || r.totalValuePaid || r.totalValue || 0);
+                    globalStats.containers += (r.totalContainers || r.totalContainer || 0);
+                    globalStats.shipments += (r.totalShipments || r.totalShipment || 0);
+                }
+            });
+
+            // Set the state using our clean, calculated global stats
+            setRecord(globalStats);
             setTransactions((txnRes || []).slice(0, 5));
             setEmployees(empRes || []);
         } catch (e) {
@@ -51,7 +77,7 @@ export default function AdminDashboard() {
                 <div className={styles.dashStatsGrid}>
                     <StatCard
                         label="Transactions Today"
-                        value={record.totalTransactions}
+                        value={record.txns}
                         sub="Record open"
                         className={styles.dashStatCard}
                         labelClassName={styles.dashStatLabel}
@@ -60,7 +86,7 @@ export default function AdminDashboard() {
                     />
                     <StatCard
                         label="Total Paid Out"
-                        value={`$${record.totalValuePaidOut?.toFixed(2)}`}
+                        value={`$${record.paid.toFixed(2)}`}
                         sub="Today"
                         className={styles.dashStatCard}
                         labelClassName={styles.dashStatLabel}
@@ -69,7 +95,7 @@ export default function AdminDashboard() {
                     />
                     <StatCard
                         label="Containers Processed"
-                        value={record.totalContainers?.toLocaleString()}
+                        value={record.containers.toLocaleString()}
                         sub="Today"
                         className={styles.dashStatCard}
                         labelClassName={styles.dashStatLabel}
@@ -78,7 +104,7 @@ export default function AdminDashboard() {
                     />
                     <StatCard
                         label="Shipments"
-                        value={record.totalShipments}
+                        value={record.shipments}
                         sub="Today"
                         className={styles.dashStatCard}
                         labelClassName={styles.dashStatLabel}
