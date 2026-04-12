@@ -25,21 +25,11 @@ export default function AdminDashboard() {
                 getAllEmployees(),
             ]);
 
-            // 1. Fix the .data trap: Safely grab the payload
+            // Safely unwrap daily record
             let recordData = recRes?.data ? recRes.data : recRes;
-
-            // 2. Safely wrap it in an array so we can process it 
-            // (Just in case the backend returns an array of all employee records for the day)
             let recordsArray = Array.isArray(recordData) ? recordData : [recordData];
 
-            let globalStats = {
-                txns: 0,
-                paid: 0,
-                containers: 0,
-                shipments: 0
-            };
-
-            // 3. Aggregate the totals with fallbacks for property name mismatches
+            let globalStats = { txns: 0, paid: 0, containers: 0, shipments: 0 };
             recordsArray.forEach(r => {
                 if (r) {
                     globalStats.txns += (r.totalTransactions || r.totalTransaction || 0);
@@ -49,15 +39,33 @@ export default function AdminDashboard() {
                 }
             });
 
-            // Set the state using our clean, calculated global stats
             setRecord(globalStats);
-            setTransactions((txnRes || []).slice(0, 5));
-            setEmployees(empRes || []);
+            
+            // Safely unwrap transactions and employees
+            const txnData = txnRes?.data ? txnRes.data : txnRes;
+            setTransactions(Array.isArray(txnData) ? txnData : []);
+            
+            const empData = empRes?.data ? empRes.data : empRes;
+            setEmployees(Array.isArray(empData) ? empData : []);
+
         } catch (e) {
             setError('Failed to load dashboard data');
             console.error(e);
         }
     };
+
+    // --- Filter Transactions ---
+    const todayStr = new Date().toLocaleDateString();
+    
+    // Everything that matches today's date string
+    const todaysTransactions = transactions.filter(t => 
+        new Date(t.date).toLocaleDateString() === todayStr
+    );
+    
+    // Everything else (sliced to 5 so the table doesn't get infinitely long)
+    const pastTransactions = transactions.filter(t => 
+        new Date(t.date).toLocaleDateString() !== todayStr
+    ).slice(0, 5);
 
     return (
         <div className={styles.dashPage}>
@@ -115,36 +123,75 @@ export default function AdminDashboard() {
             )}
 
             <div className={styles.dashContentGrid}>
-                <div className={styles.dashPanel}>
-                    <div className={styles.dashPanelHeader}>Recent Transactions</div>
-                    <table className={styles.dashTable}>
-                        <thead>
-                            <tr>
-                                <th>Customer</th>
-                                <th>Employee</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {transactions.length === 0 ? (
+                {/* Left Column: Two Transaction Tables Stacked */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    
+                    {/* Today's Transactions Panel */}
+                    <div className={styles.dashPanel}>
+                        <div className={styles.dashPanelHeader}>Today's Transactions</div>
+                        <table className={styles.dashTable}>
+                            <thead>
                                 <tr>
-                                    <td colSpan="3" className={styles.dashEmpty}>
-                                        No transactions yet
-                                    </td>
+                                    <th>Customer</th>
+                                    <th>Employee</th>
+                                    <th>Total</th>
                                 </tr>
-                            ) : (
-                                transactions.map(t => (
-                                    <tr key={t.transactionID}>
-                                        <td>{t.customerName}</td>
-                                        <td className={styles.dashMuted}>{t.employeeName}</td>
-                                        <td className={styles.dashMoney}>${t.total?.toFixed(2)}</td>
+                            </thead>
+                            <tbody>
+                                {todaysTransactions.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="3" className={styles.dashEmpty}>
+                                            No transactions today
+                                        </td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                                ) : (
+                                    todaysTransactions.map(t => (
+                                        <tr key={t.transactionID}>
+                                            <td>{t.customerName}</td>
+                                            <td className={styles.dashMuted}>{t.employeeName}</td>
+                                            <td className={styles.dashMoney}>${t.total?.toFixed(2)}</td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Past Transactions Panel */}
+                    <div className={styles.dashPanel}>
+                        <div className={styles.dashPanelHeader}>Past Transactions</div>
+                        <table className={styles.dashTable}>
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Date</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {pastTransactions.length === 0 ? (
+                                    <tr>
+                                        <td colSpan="3" className={styles.dashEmpty}>
+                                            No past transactions
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    pastTransactions.map(t => (
+                                        <tr key={t.transactionID}>
+                                            <td>{t.customerName}</td>
+                                            <td className={styles.dashMuted}>
+                                                {new Date(t.date).toLocaleDateString()}
+                                            </td>
+                                            <td className={styles.dashMoney}>${t.total?.toFixed(2)}</td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
+                {/* Right Column: Employees */}
                 <div className={styles.dashPanel}>
                     <div className={styles.dashPanelHeader}>Employees</div>
                     <div className={styles.dashEmpList}>

@@ -12,13 +12,13 @@ export default function Reports() {
     useEffect(() => {
         Promise.all([getAllRecords(), getAllShipments()])
             .then(([r, s]) => {
-                // 1. Log the raw data so we can see exactly what the API is giving us
-                console.log("Raw Records Data:", r);
-                console.log("Raw Shipments Data:", s);
+                // 1. Safely unwrap the Axios .data payload
+                const recordsPayload   = r?.data ? r.data : r;
+                const shipmentsPayload = s?.data ? s.data : s;
 
-                // 2. Only update state if it's actually an array, otherwise default to []
-                setRecords(Array.isArray(r) ? r : []);
-                setShipments(Array.isArray(s) ? s : []);
+                // 2. Only update state if the unwrapped payload is an array
+                setRecords(Array.isArray(recordsPayload) ? recordsPayload : []);
+                setShipments(Array.isArray(shipmentsPayload) ? shipmentsPayload : []);
             })
             .catch((err) => {
                 console.error(err);
