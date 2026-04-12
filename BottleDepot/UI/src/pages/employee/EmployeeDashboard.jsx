@@ -12,6 +12,7 @@ export default function EmployeeDashboard() {
     const [error, setError] = useState('');
 
     const navigate = useNavigate();
+    
     useEffect(() => {
         if (user?.workId) {
             getTransactionsByEmployee(user.workId)
@@ -20,8 +21,18 @@ export default function EmployeeDashboard() {
         }
     }, [user]);
 
-    const totalContainers = transactions.reduce((s, t) => s + t.totalContainers, 0);
-    const totalPaidOut    = transactions.reduce((s, t) => s + t.total, 0);
+    // --- THE FIX ---
+    // 1. Get today's date string in the same format your table uses
+    const todayStr = new Date().toLocaleDateString();
+
+    // 2. Filter the data to only include transactions from today
+    const todaysTransactions = transactions.filter(t => 
+        new Date(t.date).toLocaleDateString() === todayStr
+    );
+
+    // 3. Do the math using ONLY today's transactions
+    const totalContainers = todaysTransactions.reduce((s, t) => s + t.totalContainers, 0);
+    const totalPaidOut    = todaysTransactions.reduce((s, t) => s + t.total, 0);
 
     return (
         <div className={styles.page}>
@@ -45,7 +56,7 @@ export default function EmployeeDashboard() {
                 </button>
                 <StatCard
                     label="My Transactions"
-                    value={transactions.length}
+                    value={todaysTransactions.length} 
                     sub="Today"
                     className={styles.statCard}
                     labelClassName={styles.statLabel}
@@ -55,7 +66,7 @@ export default function EmployeeDashboard() {
                 <StatCard
                     label="Containers"
                     value={totalContainers.toLocaleString()}
-                    sub="Processed"
+                    sub="Processed Today" 
                     className={styles.statCard}
                     labelClassName={styles.statLabel}
                     valueClassName={styles.statValue}
@@ -64,7 +75,7 @@ export default function EmployeeDashboard() {
                 <StatCard
                     label="Total Paid Out"
                     value={`$${totalPaidOut.toFixed(2)}`}
-                    sub="My transactions"
+                    sub="Today" 
                     className={styles.statCard}
                     labelClassName={styles.statLabel}
                     valueClassName={styles.statValue}
@@ -72,7 +83,7 @@ export default function EmployeeDashboard() {
                 />
             </div>
 
-            {/* Transactions table */}
+            {/* Transactions table - Keeps using the full 'transactions' array to show history */}
             <div className={styles.panel}>
                 <div className={styles.panelHeader}>Recent Transactions</div>
                 <table className={styles.table}>
