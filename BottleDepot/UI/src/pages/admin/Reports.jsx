@@ -12,10 +12,18 @@ export default function Reports() {
     useEffect(() => {
         Promise.all([getAllRecords(), getAllShipments()])
             .then(([r, s]) => {
-                setRecords(r);
-                setShipments(s);
+                // 1. Log the raw data so we can see exactly what the API is giving us
+                console.log("Raw Records Data:", r);
+                console.log("Raw Shipments Data:", s);
+
+                // 2. Only update state if it's actually an array, otherwise default to []
+                setRecords(Array.isArray(r) ? r : []);
+                setShipments(Array.isArray(s) ? s : []);
             })
-            .catch(() => setError('Failed to load report data'));
+            .catch((err) => {
+                console.error(err);
+                setError('Failed to load report data');
+            });
     }, []);
 
     const totalPaidOut    = records.reduce((s, r) => s + (r.totalValuePaidOut || 0), 0);
