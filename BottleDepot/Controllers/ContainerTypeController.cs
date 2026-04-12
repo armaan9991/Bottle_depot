@@ -29,8 +29,7 @@ namespace BottleDepot.Controllers
                         ContainerTypeID,
                         Material,
                         Refund,
-                        BagLimit,
-                        SizeCategory,
+                        Size_of_Container,
                         CountMethod
                     FROM CONTAINER_TYPE
                     ORDER BY ContainerTypeID", _db);
@@ -42,12 +41,11 @@ namespace BottleDepot.Controllers
                 {
                     types.Add(new ContainerType
                     {
-                        ContainerTypeID = reader.GetInt32("ContainerTypeID"),
-                        Material        = reader.GetString("Material"),
-                        Refund          = reader.GetDecimal("Refund"),
-                        BagLimit        = reader.GetInt32("BagLimit"),
-                        SizeCategory    = reader.GetString("SizeCategory"),
-                        CountMethod     = reader.GetString("CountMethod")
+                        ContainerTypeID   = reader.GetInt32("ContainerTypeID"),
+                        Material          = reader.GetString("Material"),
+                        Refund            = reader.GetDecimal("Refund"),
+                        Size_of_Container = reader.GetDecimal("Size_of_Container"),
+                        CountMethod       = reader.GetString("CountMethod")
                     });
                 }
 
