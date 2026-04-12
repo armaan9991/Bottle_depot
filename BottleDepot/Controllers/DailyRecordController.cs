@@ -26,15 +26,9 @@ namespace BottleDepot.Controllers
 
                 var cmd = new MySqlCommand(@"
                     SELECT
-                        dr.RecordID,
-                        dr.TotalTransaction,
-                        dr.TotalValuePaid,
-                        dr.TotalContainer,
-                        dr.TotalShipments,
-                        dr.RecordDate,
-                        dr.Status,
-                        dr.WorkID,
-                        e.Name AS EmployeeName
+                        dr.RecordID, dr.TotalTransaction, dr.TotalValuePaid,
+                        dr.TotalContainer, dr.TotalShipments, dr.RecordDate,
+                        dr.Status, dr.WorkID, e.Name AS EmployeeName
                     FROM DAILY_RECORD dr
                     JOIN EMPLOYEE e ON dr.WorkID = e.WorkID
                     ORDER BY dr.RecordDate DESC", _db);
@@ -69,6 +63,7 @@ namespace BottleDepot.Controllers
                 await _db.CloseAsync();
             }
         }
+
         [Authorize]
         [HttpGet("today")]
         public async Task<IActionResult> GetToday()
@@ -77,40 +72,73 @@ namespace BottleDepot.Controllers
             {
                 await _db.OpenAsync();
 
+                // 1. Try to find a record for today
                 var cmd = new MySqlCommand(@"
                     SELECT
-                        dr.RecordID,
-                        dr.TotalTransaction,
-                        dr.TotalValuePaid,
-                        dr.TotalContainer,
-                        dr.TotalShipments,
-                        dr.RecordDate,
-                        dr.Status,
-                        dr.WorkID,
-                        e.Name AS EmployeeName
+                        dr.RecordID, dr.TotalTransaction, dr.TotalValuePaid,
+                        dr.TotalContainer, dr.TotalShipments, dr.RecordDate,
+                        dr.Status, dr.WorkID, e.Name AS EmployeeName
                     FROM DAILY_RECORD dr
                     JOIN EMPLOYEE e ON dr.WorkID = e.WorkID
-                    WHERE DATE(dr.RecordDate) = CURDATE()", _db);
+                    WHERE DATE(dr.RecordDate) = CURDATE()
+                    ORDER BY dr.RecordID DESC LIMIT 1", _db);
 
                 using var reader = await cmd.ExecuteReaderAsync();
 
-                if (!await reader.ReadAsync())
-                     return Ok(null);
-
-                var record = new DailyRecordDTO
+                if (await reader.ReadAsync())
                 {
-                    RecordID          = reader.GetInt32("RecordID"),
-                    TotalTransactions = reader.GetInt32("TotalTransaction"),
-                    TotalValuePaidOut = reader.GetDecimal("TotalValuePaid"),
-                    TotalContainers   = reader.GetInt32("TotalContainer"),
-                    TotalShipments    = reader.GetInt32("TotalShipments"),
-                    RecordDate        = reader.GetDateTime("RecordDate"),
-                    Status            = reader.GetString("Status"),
-                    WorkID            = reader.GetInt32("WorkID"),
-                    EmployeeName      = reader.GetString("EmployeeName")
+                    var record = new DailyRecordDTO
+                    {
+                        RecordID          = reader.GetInt32("RecordID"),
+                        TotalTransactions = reader.GetInt32("TotalTransaction"),
+                        TotalValuePaidOut = reader.GetDecimal("TotalValuePaid"),
+                        TotalContainers   = reader.GetInt32("TotalContainer"),
+                        TotalShipments    = reader.GetInt32("TotalShipments"),
+                        RecordDate        = reader.GetDateTime("RecordDate"),
+                        Status            = reader.GetString("Status"),
+                        WorkID            = reader.GetInt32("WorkID"),
+                        EmployeeName      = reader.GetString("EmployeeName")
+                    };
+                    return Ok(record);
+                }
+                
+                // 2. If NO record exists for today, we close the reader and create one dynamically!
+                await reader.CloseAsync();
+
+                // Grab the currently logged in user's ID from their JWT token
+                var workIdClaim = User.Claims.FirstOrDefault(c => c.Type == "workId")?.Value;
+                int currentWorkId = workIdClaim != null ? int.Parse(workIdClaim) : 1;
+
+                var insertCmd = new MySqlCommand(@"
+                    INSERT INTO DAILY_RECORD 
+                        (TotalTransaction, TotalValuePaid, TotalContainer, TotalShipments, RecordDate, Status, WorkID)
+                    VALUES 
+                        (0, 0.00, 0, 0, CURDATE(), 'Open', @workId);
+                    SELECT LAST_INSERT_ID();", _db);
+                
+                insertCmd.Parameters.AddWithValue("@workId", currentWorkId);
+                
+                var newIdResult = await insertCmd.ExecuteScalarAsync();
+                int newRecordId = Convert.ToInt32(newIdResult);
+
+                var empCmd = new MySqlCommand("SELECT Name FROM EMPLOYEE WHERE WorkID = @workId", _db);
+                empCmd.Parameters.AddWithValue("@workId", currentWorkId);
+                string empName = (await empCmd.ExecuteScalarAsync())?.ToString() ?? "Unknown";
+
+                var newRecord = new DailyRecordDTO
+                {
+                    RecordID          = newRecordId,
+                    TotalTransactions = 0,
+                    TotalValuePaidOut = 0,
+                    TotalContainers   = 0,
+                    TotalShipments    = 0,
+                    RecordDate        = DateTime.Now,
+                    Status            = "Open",
+                    WorkID            = currentWorkId,
+                    EmployeeName      = empName
                 };
 
-                return Ok(record);
+                return Ok(newRecord);
             }
             catch (Exception ex)
             {
@@ -124,14 +152,15 @@ namespace BottleDepot.Controllers
 
         [Authorize(Roles ="Admin")]
         [HttpPost("close")]
-        public async Task<IActionResult> Close( [FromBody]int recordId)
+        public async Task<IActionResult> Close([FromBody]int recordId)
         {
             try
             {
                 await _db.OpenAsync();
 
+                // Removed the stored procedure here as well!
                 var cmd = new MySqlCommand(
-                    "CALL sp_CloseDailyRecord(@recordId, 1)", _db);
+                    "UPDATE DAILY_RECORD SET Status = 'Closed' WHERE RecordID = @recordId", _db);
 
                 cmd.Parameters.AddWithValue("@recordId", recordId);
 

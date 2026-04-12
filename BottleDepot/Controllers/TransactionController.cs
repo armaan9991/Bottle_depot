@@ -16,6 +16,7 @@ namespace BottleDepot.Controllers
         {
             _db = db;
         }
+
         [Authorize(Roles ="Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
@@ -79,7 +80,6 @@ namespace BottleDepot.Controllers
             {
                 await _db.OpenAsync();
 
-                // get transaction
                 var cmd = new MySqlCommand(@"
                     SELECT
                         t.TransactionID,
@@ -106,7 +106,7 @@ namespace BottleDepot.Controllers
                 var transaction = new TransactionDTO
                 {
                     TransactionID   = reader.GetInt32("TransactionID"),
-                    Date            = reader.GetDateTime("Date"),
+                    Date            = reader.GetDateTime("TransactionDate"),
                     Total           = reader.GetDecimal("Total"),
                     TotalContainers = reader.GetInt32("TotalContainers"),
                     CustomerID      = reader.GetInt32("CustomerID"),
@@ -119,7 +119,6 @@ namespace BottleDepot.Controllers
 
                 await reader.CloseAsync();
 
-                // get transaction details
                 var detailCmd = new MySqlCommand(@"
                     SELECT
                         td.TransactionDetailID,
@@ -164,7 +163,7 @@ namespace BottleDepot.Controllers
 
         [Authorize(Roles ="Admin,Employee")]
         [HttpGet("employee/{workId}")]
-        public async Task<IActionResult>  GetTransactionsByEmployee(int workId)
+        public async Task<IActionResult> GetTransactionsByEmployee(int workId)
         {
             try
             {
@@ -228,15 +227,13 @@ namespace BottleDepot.Controllers
             {
                 await _db.OpenAsync();
 
-                // call stored procedure
+                // 1. Insert Transaction directly instead of using a stored procedure
                 var cmd = new MySqlCommand(@"
-                    CALL sp_CreateTransaction(
-                        @customerId,
-                        @workId,
-                        @recordId,
-                        @total,
-                        @totalContainers
-                    )", _db);
+                    INSERT INTO TRANSACTION 
+                        (TransactionDate, Total, TotalContainers, CustomerID, WorkID, RecordID)
+                    VALUES 
+                        (CURDATE(), @total, @totalContainers, @customerId, @workId, @recordId);
+                    SELECT LAST_INSERT_ID();", _db);
 
                 cmd.Parameters.AddWithValue("@customerId",      req.CustomerID);
                 cmd.Parameters.AddWithValue("@workId",          req.WorkID);
@@ -244,20 +241,17 @@ namespace BottleDepot.Controllers
                 cmd.Parameters.AddWithValue("@total",           req.Total);
                 cmd.Parameters.AddWithValue("@totalContainers", req.TotalContainers);
 
-                using var reader = await cmd.ExecuteReaderAsync();
-                await reader.ReadAsync();
-                var newId = reader.GetInt32("NewTransactionID");
-                await reader.CloseAsync();
+                var newIdResult = await cmd.ExecuteScalarAsync();
+                int newId = Convert.ToInt32(newIdResult);
 
+                // 2. Insert the Line Items
                 foreach (var detail in req.Details)
                 {
                     var detailCmd = new MySqlCommand(@"
                         INSERT INTO TRANSACTION_DETAIL
-                            (TransactionID, Quantity,
-                             UnitValue, Value, ContainerTypeID)
+                            (TransactionID, Quantity, UnitValue, Value, ContainerTypeID)
                         VALUES
-                            (@txnId, @qty,
-                             @unitVal, @val, @ctId)", _db);
+                            (@txnId, @qty, @unitVal, @val, @ctId)", _db);
 
                     detailCmd.Parameters.AddWithValue("@txnId",  newId);
                     detailCmd.Parameters.AddWithValue("@qty",    detail.Quantity);
@@ -267,6 +261,19 @@ namespace BottleDepot.Controllers
 
                     await detailCmd.ExecuteNonQueryAsync();
                 }
+                
+                var updateRecordCmd = new MySqlCommand(@"
+                    UPDATE DAILY_RECORD
+                    SET TotalTransaction = TotalTransaction + 1,
+                        TotalValuePaid = TotalValuePaid + @total,
+                        TotalContainer = TotalContainer + @totalContainers
+                    WHERE RecordID = @recordId", _db);
+
+                updateRecordCmd.Parameters.AddWithValue("@total", req.Total);
+                updateRecordCmd.Parameters.AddWithValue("@totalContainers", req.TotalContainers);
+                updateRecordCmd.Parameters.AddWithValue("@recordId", req.RecordID);
+
+                await updateRecordCmd.ExecuteNonQueryAsync();
 
                 return Ok(new {
                     message       = "Transaction created successfully",
