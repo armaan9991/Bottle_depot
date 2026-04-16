@@ -2,9 +2,8 @@ namespace BottleDepot.Models
 {
     public class LoginRequest
     {
-    public int WorkID{get;set;}
-    public string Password{get;set;}
-
+        public int WorkID { get; set; }
+        public string Password { get; set; }
     }
 
     public class CreateCustomerRequest
@@ -13,6 +12,7 @@ namespace BottleDepot.Models
         public string Email { get; set; }
         public string Phone { get; set; }
     }
+    
     public class CreateEmployeeRequest
     {
         public string Name { get; set; }
@@ -44,7 +44,8 @@ namespace BottleDepot.Models
         public int TotalContainers { get; set; }
         public List<CreateDetailRequest> Details { get; set; }
     }
-     public class CreateDetailRequest
+    
+    public class CreateDetailRequest
     {
         public int ContainerTypeID { get; set; }
         public int Quantity { get; set; }
@@ -57,9 +58,7 @@ namespace BottleDepot.Models
         public int CompanyID { get; set; }
         public int WorkID { get; set; }
         public int RecordID { get; set; }
-
         public int TotalBags { get; set; }
         public decimal TotalValue { get; set; }
     }
-
 }
