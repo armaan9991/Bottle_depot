@@ -74,23 +74,25 @@ namespace BottleDepot.Controllers
             {
                 await _db.OpenAsync();
 
+                // 1. Insert ONLY the columns the SHIPMENT table actually has
                 var cmd = new MySqlCommand(@"
-                    CALL sp_CreateShipment(
-                        @companyId,
-                        @workId,
-                        @recordId
-                    )", _db);
+                    INSERT INTO SHIPMENT 
+                        (ShipmentDate, TotalValue, TotalBags, CompanyID)
+                    VALUES 
+                        (CURDATE(), 0, 0, @companyId);
+                        
+                    UPDATE DAILY_RECORD
+                    SET TotalShipments = TotalShipments + 1
+                    WHERE RecordID = @recordId;", _db);
 
                 cmd.Parameters.AddWithValue("@companyId", req.CompanyID);
-                cmd.Parameters.AddWithValue("@workId",    req.WorkID);
                 cmd.Parameters.AddWithValue("@recordId",  req.RecordID);
 
                 await cmd.ExecuteNonQueryAsync();
               
 
                 return Ok(new {
-                    message    = "Shipment created successfully",
-                    // shipmentId = newId
+                    message    = "Shipment created successfully"
                 });
             }
             catch (Exception r)
@@ -104,40 +106,40 @@ namespace BottleDepot.Controllers
         }
 
         [Authorize]
-[HttpGet("companies")]
-public async Task<IActionResult> GetAllCompanies()
-{
-    try
-    {
-        await _db.OpenAsync();
-
-        var cmd = new MySqlCommand(@"
-            SELECT CompanyID, CompanyName
-            FROM RECYCLE_COMPANY
-            ORDER BY CompanyName ASC", _db);
-
-        var companies = new List<RecycleCompanyDTO>();
-        using var reader = await cmd.ExecuteReaderAsync();
-
-        while (await reader.ReadAsync())
+        [HttpGet("companies")]
+        public async Task<IActionResult> GetAllCompanies()
         {
-            companies.Add(new RecycleCompanyDTO
+            try
             {
-                CompanyID   = reader.GetInt32("CompanyID"),
-                CompanyName = reader.GetString("CompanyName"),
-            });
-        }
+                await _db.OpenAsync();
 
-        return Ok(companies);
-    }
-    catch (Exception ex)
-    {
-        return StatusCode(500, new { message = ex.Message });
-    }
-    finally
-    {
-        await _db.CloseAsync();
-    }
-}
+                var cmd = new MySqlCommand(@"
+                    SELECT CompanyID, CompanyName
+                    FROM RECYCLE_COMPANY
+                    ORDER BY CompanyName ASC", _db);
+
+                var companies = new List<RecycleCompanyDTO>();
+                using var reader = await cmd.ExecuteReaderAsync();
+
+                while (await reader.ReadAsync())
+                {
+                    companies.Add(new RecycleCompanyDTO
+                    {
+                        CompanyID   = reader.GetInt32("CompanyID"),
+                        CompanyName = reader.GetString("CompanyName"),
+                    });
+                }
+
+                return Ok(companies);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
+            }
+            finally
+            {
+                await _db.CloseAsync();
+            }
+        }
     }
 }
