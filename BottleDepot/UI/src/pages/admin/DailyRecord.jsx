@@ -1,28 +1,34 @@
 import { useState, useEffect } from 'react';
-import { getTodayRecord, closeRecord } from '../../api/dailyrecords';
+// import { getTodayRecord, closeRecord } from '../../api/dailyrecords';
 import styles from './DailyRecord.module.css';
+import { useParams } from 'react-router-dom';
+import { getTodayRecord, getRecordById,getRecordByDate, closeRecord } from '../../api/dailyrecords';
 
 export default function DailyRecord() {
     const [record,  setRecord]  = useState(null);
     const [error,   setError]   = useState('');
     const [loading, setLoading] = useState(false);
     const [initial, setInitial] = useState(true);
+const { date } = useParams();
+useEffect(() => {
+    load();
+}, [date]);
+   const load = async () => {
+    setError('');
+    try {
+        const res = id
+            ? await getRecordByDate(date)
+            : await getTodayRecord();
 
-    useEffect(() => { load(); }, []);
-
-    const load = async () => {
-        setError('');
-        try {
-            const res = await getTodayRecord();
-            setRecord(res.data);
-        } catch (err) {
-            const msg = err?.response?.data?.message;
-            setRecord(null);
-            setError(msg || 'No daily record found for today.');
-        } finally {
-            setInitial(false);
-        }
-    };
+        setRecord(res.data);
+    } catch (err) {
+        const msg = err?.response?.data?.message;
+        setRecord(null);
+        setError(msg || 'No daily record found.');
+    } finally {
+        setInitial(false);
+    }
+};
 
     const handleClose = async () => {
         if (!window.confirm("Close today's record? This cannot be undone.")) return;

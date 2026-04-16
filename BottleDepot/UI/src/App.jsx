@@ -64,6 +64,8 @@ export default function App() {
                         <EmployeeDashboard />
                     </ProtectedRoute>
                 } />
+
+                <Route path="/admin/daily-record/:date" element={<DailyRecord />} />
                 <Route path="/employee/schedule" element={
                     <ProtectedRoute role="Employee">
                         <MySchedule />

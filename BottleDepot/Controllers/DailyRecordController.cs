@@ -150,6 +150,101 @@ namespace BottleDepot.Controllers
             }
         }
 
+        [Authorize]
+[HttpGet("{id}")]
+public async Task<IActionResult> GetById(int id)
+{
+    try
+    {
+        await _db.OpenAsync();
+
+        var cmd = new MySqlCommand(@"
+            SELECT
+                dr.RecordID, dr.TotalTransaction, dr.TotalValuePaid,
+                dr.TotalContainer, dr.TotalShipments, dr.RecordDate,
+                dr.Status, dr.WorkID, e.Name AS EmployeeName
+            FROM DAILY_RECORD dr
+            JOIN EMPLOYEE e ON dr.WorkID = e.WorkID
+            WHERE dr.RecordID = @id", _db);
+
+        cmd.Parameters.AddWithValue("@id", id);
+
+        using var reader = await cmd.ExecuteReaderAsync();
+
+        if (!await reader.ReadAsync())
+            return NotFound(new { message = "Record not found" });
+
+        return Ok(new DailyRecordDTO
+        {
+            RecordID = reader.GetInt32("RecordID"),
+            TotalTransactions = reader.GetInt32("TotalTransaction"),
+            TotalValuePaidOut = reader.GetDecimal("TotalValuePaid"),
+            TotalContainers = reader.GetInt32("TotalContainer"),
+            TotalShipments = reader.GetInt32("TotalShipments"),
+            RecordDate = reader.GetDateTime("RecordDate"),
+            Status = reader.GetString("Status"),
+            WorkID = reader.GetInt32("WorkID"),
+            EmployeeName = reader.GetString("EmployeeName")
+        });
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, new { message = ex.Message });
+    }
+    finally
+    {
+        await _db.CloseAsync();
+    }
+}
+
+[Authorize]
+[HttpGet("date/{date}")]
+public async Task<IActionResult> GetByDate(string date)
+{
+    try
+    {
+        await _db.OpenAsync();
+
+        var cmd = new MySqlCommand(@"
+            SELECT
+                dr.RecordID, dr.TotalTransaction, dr.TotalValuePaid,
+                dr.TotalContainer, dr.TotalShipments, dr.RecordDate,
+                dr.Status, dr.WorkID, e.Name AS EmployeeName
+            FROM DAILY_RECORD dr
+            JOIN EMPLOYEE e ON dr.WorkID = e.WorkID
+            WHERE DATE(dr.RecordDate) = @date
+            LIMIT 1", _db);
+
+        cmd.Parameters.AddWithValue("@date", date);
+
+        using var reader = await cmd.ExecuteReaderAsync();
+
+        if (!await reader.ReadAsync())
+            return NotFound(new { message = "No record for selected date" });
+
+        return Ok(new DailyRecordDTO
+        {
+            RecordID = reader.GetInt32("RecordID"),
+            TotalTransactions = reader.GetInt32("TotalTransaction"),
+            TotalValuePaidOut = reader.GetDecimal("TotalValuePaid"),
+            TotalContainers = reader.GetInt32("TotalContainer"),
+            TotalShipments = reader.GetInt32("TotalShipments"),
+            RecordDate = reader.GetDateTime("RecordDate"),
+            Status = reader.GetString("Status"),
+            WorkID = reader.GetInt32("WorkID"),
+            EmployeeName = reader.GetString("EmployeeName")
+        });
+    }
+    catch (Exception ex)
+    {
+        return StatusCode(500, new { message = ex.Message });
+    }
+    finally
+    {
+        await _db.CloseAsync();
+    }
+}
+
         [Authorize(Roles ="Admin")]
         [HttpPost("close")]
         public async Task<IActionResult> Close([FromBody]int recordId)

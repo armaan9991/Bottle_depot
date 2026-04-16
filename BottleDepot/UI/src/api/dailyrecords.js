@@ -17,6 +17,9 @@ export const getTodayRecord = async () => {
         throw error;
     }
 };
+export const getRecordByDate = async (date) => {
+    return await API.get(`/api/DailyRecord/date/${date}`);
+};
 
 export const getRecordById = async (id) => {
     try {

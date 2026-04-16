@@ -3,11 +3,13 @@ import { useState, useEffect } from 'react';
 import { getAllRecords } from '../../api/dailyrecords';
 import { getAllShipments } from '../../api/shipments';
 import styles from './Reports.module.css';
+import { useNavigate } from 'react-router-dom';
 
 export default function Reports() {
     const [records,   setRecords]   = useState([]);
     const [shipments, setShipments] = useState([]);
     const [error,     setError]     = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         Promise.all([getAllRecords(), getAllShipments()])
@@ -73,7 +75,17 @@ export default function Reports() {
                             {records.length === 0 ? (
                                 <tr><td colSpan="4" className={styles.repEmpty}>No records yet</td></tr>
                             ) : records.map(r => (
-                                <tr key={r.recordID}>
+                                                 <tr
+                                                   key={r.recordID}
+                                          onClick={() =>
+                                              navigate(
+                                                  `/admin/daily-record/${new Date(r.recordDate)
+                                                      .toISOString()
+                                                      .split('T')[0]}`
+                                              )
+                                          }
+                                          style={{ cursor: 'pointer' }}
+>
                                     <td className={styles.repMuted}>
                                         {new Date(r.recordDate).toLocaleDateString()}
                                     </td>
