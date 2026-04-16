@@ -40,12 +40,16 @@ namespace BottleDepot.Controllers
             while (await reader.ReadAsync())
                 {
                     customers.Add(new CustomerDTO
-                    {
-                        CustomerID = reader.GetInt32("CustomerID"),
-                        Name       = reader.GetString("Name"),
-                        Email      = reader.GetString("Email"),
-                        Phone      = reader.GetString("Phone") 
-                    });
+{
+    CustomerID = reader.GetInt32("CustomerID"),
+    Name = reader.GetString("Name"),
+    Email = reader.IsDBNull(reader.GetOrdinal("Email"))
+        ? ""
+        : reader.GetString("Email"),
+    Phone = reader.IsDBNull(reader.GetOrdinal("Phone"))
+        ? ""
+        : reader.GetString("Phone")
+});
                 }    
               return Ok(customers);   
             }

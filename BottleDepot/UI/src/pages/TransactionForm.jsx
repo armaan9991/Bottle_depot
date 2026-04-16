@@ -83,10 +83,11 @@ const [creatingCustomer, setCreatingCustomer] = useState(false);
     setCreatingCustomer(true);
 
     try {
-        const created = await createCustomer({
-            name: newCustomerName,
-            email: newCustomerEmail
-        });
+       const created = await createCustomer({
+    name: newCustomerName.trim(),
+    email: newCustomerEmail.trim() || null,
+    phone: null
+});
 
         // update dropdown instantly
         setCustomers(prev => [...prev, created]);
