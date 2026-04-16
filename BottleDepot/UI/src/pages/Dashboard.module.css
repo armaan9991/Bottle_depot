@@ -335,3 +335,57 @@
         padding: 16px;
     }
 }
+
+/* ── Add these to the bottom of src/pages/Dashboard.module.css ── */
+ 
+/* Clickable transaction rows */
+.dashClickableRow:hover {
+    background-color: #f0f7ff;
+    transition: background-color 0.15s ease;
+}
+ 
+.dashClickableRow:active {
+    background-color: #dbeafe;
+}
+ 
+/* Loading indicator while fetching detail */
+.dashLoadingDot {
+    color: #9ca3af;
+    font-size: 18px;
+    letter-spacing: 2px;
+}
+ 
+/* Subtle hint text next to panel header */
+.dashPanelHint {
+    font-size: 11px;
+    font-weight: 400;
+    color: #9ca3af;
+    margin-left: 8px;
+    font-style: italic;
+}
+ 
+.dashNewTxnBtn {
+    display: block;
+    width: 100%;
+    padding: 12px 20px;
+    background: #1d4ed8;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+ 
+.dashNewTxnBtn:hover {
+    background: #1e40af;
+    transform: translateY(-1px);
+}
+ 
+.dashNewTxnBtn:active {
+    transform: translateY(0);
+    background: #1e3a8a;
+}
+ 
