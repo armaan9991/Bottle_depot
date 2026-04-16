@@ -57,6 +57,9 @@ namespace BottleDepot.Models
         public int CompanyID { get; set; }
         public int WorkID { get; set; }
         public int RecordID { get; set; }
+
+        public int TotalBags { get; set; }
+        public decimal TotalValue { get; set; }
     }
 
 }

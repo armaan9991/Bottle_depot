@@ -4,7 +4,7 @@ import { getAllShipments, createShipment, getAllCompanies } from '../../api/ship
 import { getTodayRecord } from '../../api/dailyrecords';
 import styles from './ManageShipments.module.css';
 
-const EMPTY_FORM = { companyID: '' };
+const EMPTY_FORM = { companyID: '', totalBags: '', totalValue: '' };
 
 export default function ManageShipments() {
     const { user }                        = useAuth();
@@ -27,7 +27,9 @@ export default function ManageShipments() {
         // Shipments
         try {
             const shRes = await getAllShipments();
-            setShipments(shRes.data);
+            // Unwrap Axios payload safely
+            const data = shRes?.data ? shRes.data : shRes;
+            setShipments(Array.isArray(data) ? data : []);
         } catch {
             setError('Failed to load shipments.');
         }
@@ -35,7 +37,8 @@ export default function ManageShipments() {
         // Companies for dropdown
         try {
             const coRes = await getAllCompanies();
-            setCompanies(coRes.data);
+            const data = coRes?.data ? coRes.data : coRes;
+            setCompanies(Array.isArray(data) ? data : []);
         } catch {
             setError('Failed to load companies.');
         }
@@ -43,7 +46,7 @@ export default function ManageShipments() {
         // Today's record — missing record is not fatal
         try {
             const recRes = await getTodayRecord();
-            setTodayRecord(recRes.data);
+            setTodayRecord(recRes?.data ? recRes.data : recRes);
         } catch {
             setTodayRecord(null);
         }
@@ -55,14 +58,18 @@ export default function ManageShipments() {
         e.preventDefault();
         if (!todayRecord)    return setError('No open daily record found for today.');
         if (!form.companyID) return setError('Please select a company.');
+        if (!form.totalBags || !form.totalValue) return setError('Please fill out bags and value.');
+
         setSaving(true);
         setError('');
         setSuccess('');
         try {
             await createShipment({
-                companyID: parseInt(form.companyID, 10),
-                workID:    user.workId,
-                recordID:  todayRecord.recordID,
+                companyID:  parseInt(form.companyID, 10),
+                workID:     user.workId,
+                recordID:   todayRecord.recordID,
+                totalBags:  parseInt(form.totalBags, 10),
+                totalValue: parseFloat(form.totalValue)
             });
             setSuccess('Shipment created successfully!');
             setShowForm(false);
@@ -126,18 +133,12 @@ export default function ManageShipments() {
                                     <select
                                         id="companyID"
                                         value={form.companyID}
-                                        onChange={e => setForm({ companyID: e.target.value })}
+                                        onChange={e => setForm({ ...form, companyID: e.target.value })}
                                         required
                                         style={{
-                                            width: '100%',
-                                            padding: '8px 10px',
-                                            borderRadius: '8px',
-                                            border: '1px solid #e2e8f0',
-                                            fontSize: '13px',
-                                            fontFamily: 'inherit',
-                                            background: '#fff',
-                                            color: '#0f172a',
-                                            cursor: 'pointer',
+                                            width: '100%', padding: '8px 10px', borderRadius: '8px',
+                                            border: '1px solid #e2e8f0', fontSize: '13px', fontFamily: 'inherit',
+                                            background: '#fff', color: '#0f172a', cursor: 'pointer',
                                         }}
                                     >
                                         <option value="">— Select a company —</option>
@@ -147,6 +148,40 @@ export default function ManageShipments() {
                                             </option>
                                         ))}
                                     </select>
+                                </div>
+
+                                {/* Total Bags Input */}
+                                <div className={styles.shipFormField}>
+                                    <label>Total Bags</label>
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        placeholder="0"
+                                        value={form.totalBags}
+                                        onChange={e => setForm({ ...form, totalBags: e.target.value })}
+                                        required
+                                        style={{
+                                            width: '100%', padding: '8px 10px', borderRadius: '8px',
+                                            border: '1px solid #e2e8f0', fontSize: '13px', fontFamily: 'inherit'
+                                        }}
+                                    />
+                                </div>
+
+                                <div className={styles.shipFormField}>
+                                    <label>Total Value ($)</label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        step="0.01"
+                                        placeholder="0.00"
+                                        value={form.totalValue}
+                                        onChange={e => setForm({ ...form, totalValue: e.target.value })}
+                                        required
+                                        style={{
+                                            width: '100%', padding: '8px 10px', borderRadius: '8px',
+                                            border: '1px solid #e2e8f0', fontSize: '13px', fontFamily: 'inherit'
+                                        }}
+                                    />
                                 </div>
 
                                 {/* Processed by (read-only) */}
@@ -177,26 +212,19 @@ export default function ManageShipments() {
 
                             </div>
 
-                            {/* Warn if record is closed */}
                             {todayRecord && !recordIsOpen && (
                                 <p className={styles.shipError} style={{ marginBottom: '12px' }}>
                                     Today&apos;s record is closed. New shipments cannot be added.
                                 </p>
                             )}
 
-                            <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end' }}>
+                            <div style={{ display: 'flex', gap: '10px', justifyContent: 'flex-end', marginTop: '16px' }}>
                                 <button
                                     type="button"
                                     onClick={cancelForm}
                                     style={{
-                                        padding: '9px 16px',
-                                        background: 'none',
-                                        border: '1px solid #e2e8f0',
-                                        borderRadius: '8px',
-                                        fontSize: '13px',
-                                        color: '#64748b',
-                                        cursor: 'pointer',
-                                        fontFamily: 'inherit',
+                                        padding: '9px 16px', background: 'none', border: '1px solid #e2e8f0',
+                                        borderRadius: '8px', fontSize: '13px', color: '#64748b', cursor: 'pointer', fontFamily: 'inherit',
                                     }}
                                 >
                                     Cancel

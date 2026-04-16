@@ -4,12 +4,11 @@ using BottleDepot.DTO;
 using BottleDepot.Models;
 using Microsoft.AspNetCore.Authorization;
 
-
 namespace BottleDepot.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public  class  ShipmentController : ControllerBase
+    public class ShipmentController : ControllerBase
     {
         private readonly MySqlConnection _db;
         public ShipmentController(MySqlConnection db)
@@ -68,18 +67,18 @@ namespace BottleDepot.Controllers
 
         [Authorize(Roles ="Admin")]
         [HttpPost]
-         public async Task<IActionResult> Create([FromBody]CreateShipmentRequest req)
+        public async Task<IActionResult> Create([FromBody]CreateShipmentRequest req)
         {   
             try
             {
                 await _db.OpenAsync();
 
-                // 1. Insert ONLY the columns the SHIPMENT table actually has
+                // 1. Insert the Shipment directly with the new fields
                 var cmd = new MySqlCommand(@"
                     INSERT INTO SHIPMENT 
                         (ShipmentDate, TotalValue, TotalBags, CompanyID)
                     VALUES 
-                        (CURDATE(), 0, 0, @companyId);
+                        (CURDATE(), @totalValue, @totalBags, @companyId);
                         
                     UPDATE DAILY_RECORD
                     SET TotalShipments = TotalShipments + 1
@@ -87,12 +86,13 @@ namespace BottleDepot.Controllers
 
                 cmd.Parameters.AddWithValue("@companyId", req.CompanyID);
                 cmd.Parameters.AddWithValue("@recordId",  req.RecordID);
+                cmd.Parameters.AddWithValue("@totalBags", req.TotalBags);
+                cmd.Parameters.AddWithValue("@totalValue", req.TotalValue);
 
                 await cmd.ExecuteNonQueryAsync();
-              
 
                 return Ok(new {
-                    message    = "Shipment created successfully"
+                    message = "Shipment created successfully"
                 });
             }
             catch (Exception r)
