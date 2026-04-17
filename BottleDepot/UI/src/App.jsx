@@ -12,6 +12,7 @@ import EmployeeDashboard from './pages/employee/EmployeeDashboard';
 import MySchedule from './pages/employee/MySchedule';
 import TransactionForm from './pages/TransactionForm';
 import ManageSchedule from './pages/admin/ManageSchedule';
+import LabelDashboard from './pages/employee/LabelDashboard';
 
 export default function App() {
     const { user } = useAuth();
@@ -42,6 +43,7 @@ export default function App() {
                         <DailyRecord />
                     </ProtectedRoute>
                 } />
+                <Route path="/employee/labels" element={<LabelDashboard />} />
                 <Route path="/admin/employees" element={
                     <ProtectedRoute role="Admin">
                         <ManageEmployees />

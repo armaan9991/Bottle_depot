@@ -24,6 +24,7 @@ const Navbar = () => {
     const employeeLinks = [
         { label: 'Dashboard',   path: '/employee/dashboard' },
         { label: 'My schedule', path: '/employee/schedule'  },
+        {label: 'Label',        path:'/employee/labels'},
     ];
 
     const links = user?.role === 'Admin' ? adminLinks : employeeLinks;

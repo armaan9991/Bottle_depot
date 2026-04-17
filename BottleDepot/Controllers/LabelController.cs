@@ -10,7 +10,7 @@ namespace BottleDepot.Controllers
     {
         private readonly MySqlConnection _db;
 
-        public LabelController(MySqlConnection context)
+        public LabelController(MySqlConnection db)
         {
             _db = db;       
          }
@@ -83,9 +83,9 @@ namespace BottleDepot.Controllers
                         Status = reader.GetString("Status"),
                         WorkID = reader.GetInt32("WorkID"),
                         TransactionID = reader.GetInt32("TransactionID"),
-                        ShipmentID = reader.IsDBNull("ShipmentID")
-                            ? null
-                            : reader.GetInt32("ShipmentID")
+                        ShipmentID = reader.IsDBNull(reader.GetOrdinal("ShipmentID"))
+                          ? null
+                          : reader.GetInt32(reader.GetOrdinal("ShipmentID"))
                     });
                 }
 

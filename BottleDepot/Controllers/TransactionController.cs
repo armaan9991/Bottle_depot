@@ -17,7 +17,7 @@ namespace BottleDepot.Controllers
             _db = db;
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
