@@ -32,6 +32,10 @@ const [creatingCustomer, setCreatingCustomer] = useState(false);
     const [success, setSuccess] = useState('');
     const [loading, setLoading] = useState(false);
 
+    const isValidEmail = (email) => {
+    if (!email) return true; 
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
   useEffect(() => {
     if (!user) return;
 
@@ -80,6 +84,10 @@ const [creatingCustomer, setCreatingCustomer] = useState(false);
         return;
     }
 
+      if (!isValidEmail(newCustomerEmail)) {
+        setError('Please enter a valid email address');
+        return;
+    }
     setCreatingCustomer(true);
 
     try {
@@ -393,12 +401,23 @@ const [creatingCustomer, setCreatingCustomer] = useState(false);
             />
 
             <input
-                type="email"
-                placeholder="Email (optional)"
-                value={newCustomerEmail}
-                onChange={(e) => setNewCustomerEmail(e.target.value)}
+             type="email"
+                 placeholder="Email (optional)"
+              value={newCustomerEmail}
+             onChange={(e) => setNewCustomerEmail(e.target.value)}
+              style={{
+              borderColor:
+                  newCustomerEmail && !isValidEmail(newCustomerEmail)
+                      ? 'red'
+                   : undefined
+       }}
             />
 
+            {newCustomerEmail && !isValidEmail(newCustomerEmail) && (
+    <span style={{ color: 'red', fontSize: '12px' }}>
+        Invalid email format
+    </span>
+)}
             <div
                 style={{
                     display: 'flex',
