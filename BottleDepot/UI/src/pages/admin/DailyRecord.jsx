@@ -16,7 +16,7 @@ useEffect(() => {
    const load = async () => {
     setError('');
     try {
-        const res = id
+        const res =date
             ? await getRecordByDate(date)
             : await getTodayRecord();
 
