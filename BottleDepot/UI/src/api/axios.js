@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-    baseURL: 'http://localhost:5158',
+    baseURL: 'https://bottle-depot.onrender.com',
 });
 
 // This "interceptor" runs before every single API request
