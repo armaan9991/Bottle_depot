@@ -12,11 +12,13 @@ builder.Services.AddScoped<MySqlConnection>(_ =>
                .GetConnectionString("DefaultConnection")));
 
 // ── CORS ──────────────────────────────────────────────
-builder.Services.AddCors(options => {
-    options.AddPolicy("AllowReact", policy =>
-        policy.WithOrigins("http://localhost:5173", "http://localhost:5174")
-              .AllowAnyHeader()
-              .AllowAnyMethod());
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy => policy
+            .AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
 });
 
 // ── JWT ───────────────────────────────────────────────
@@ -51,6 +53,7 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors("AllowReact");
+app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
