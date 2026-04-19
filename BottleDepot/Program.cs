@@ -43,13 +43,15 @@ builder.Services
         };
     });
 
+
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();    // ← simple, no JWT config
 
 var app = builder.Build();
-
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+app.Urls.Add($"http://0.0.0.0:{port}");
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseCors("AllowReact");
