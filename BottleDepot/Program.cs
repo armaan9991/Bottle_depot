@@ -17,9 +17,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         policy => policy
-            .AllowAnyOrigin()
+            .WithOrigins(
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "https://bottle-depot-i2e6bpce7-armaan9991s-projects.vercel.app"
+            )
             .AllowAnyHeader()
-            .AllowAnyMethod());
+            .AllowAnyMethod()
+            .AllowCredentials()
+    );
 });
 
 // ── JWT ───────────────────────────────────────────────
