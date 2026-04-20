@@ -55,7 +55,6 @@ builder.Services
     OnTokenValidated = context =>
     {
         Console.WriteLine("JWT OK: " + context.Principal.Identity?.Name);
-        Console.WriteLine("ROLE: " + context.Principal.FindFirst("role")?.Value);
         return Task.CompletedTask;
     }
 };

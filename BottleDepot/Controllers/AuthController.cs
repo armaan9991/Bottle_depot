@@ -60,12 +60,12 @@
                     {
                         return NotFound(new {message="Cant find any employee"});
                     }
-                var workId=reader.GetInt32("WorkId");
+                var workId=reader.GetInt32("WorkID");
                 var name= reader.GetString("Name");
                 var role = reader.GetString("Role");
                 var email= reader.GetString("Email");
-                await qry.ExecuteReaderAsync();
-                
+                // await qry.ExecuteReaderAsync();
+
                 var token = GenerateToken(workId,name,role);
 
                 return Ok(new
