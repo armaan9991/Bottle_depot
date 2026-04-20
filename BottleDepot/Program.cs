@@ -51,6 +51,14 @@ builder.Services
         return Task.CompletedTask;
     }
 };
+options.Events = new JwtBearerEvents
+{
+    OnAuthenticationFailed = context =>
+    {
+        Console.WriteLine("JWT FAILED: " + context.Exception.Message);
+        return Task.CompletedTask;
+    }
+};
     });
 
 
