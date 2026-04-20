@@ -11,7 +11,7 @@ export const loginUser = async (workId, password) => {
          console.log("LOGIN RESPONSE:", response.data);
 
         if (response.data.token) {
-            localStorage.setItem('jwt_token', response.data.token);
+            localStorage.setItem('jwt_token', response.data);
             console.log("TOKEN SAVED AFTER LOGIN:", localStorage.getItem("jwt_token"));
         }
 

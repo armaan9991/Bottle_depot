@@ -15,7 +15,7 @@ namespace BottleDepot.Controllers
             _db = db;
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -123,7 +123,7 @@ namespace BottleDepot.Controllers
             }
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]CreateScheduleRequest req)
         {

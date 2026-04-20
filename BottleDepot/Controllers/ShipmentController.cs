@@ -65,7 +65,7 @@ namespace BottleDepot.Controllers
             }
          }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody]CreateShipmentRequest req)
         {   

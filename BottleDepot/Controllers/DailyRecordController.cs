@@ -16,7 +16,7 @@ namespace BottleDepot.Controllers
             _db = db;
         }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="admin")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -245,7 +245,7 @@ public async Task<IActionResult> GetByDate(string date)
     }
 }
 
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="admin")]
         [HttpPost("close")]
         public async Task<IActionResult> Close([FromBody]int recordId)
         {

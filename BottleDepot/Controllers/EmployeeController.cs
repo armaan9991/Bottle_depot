@@ -133,7 +133,7 @@ namespace BottleDepot.Controllers
                 await _db.CloseAsync();
             }
         }
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] CreateEmployeeRequest req)
         {
@@ -173,7 +173,7 @@ namespace BottleDepot.Controllers
             }
         }
         
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles ="admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id,CreateEmployeeRequest req)
         {

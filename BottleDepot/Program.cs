@@ -43,12 +43,19 @@ builder.Services
             // RoleClaimType            = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
             // NameClaimType            = "name"
             NameClaimType = "name",
-            RoleClaimType = ClaimTypes.Role        };
-        options.Events = new JwtBearerEvents
+            RoleClaimType = "role"       
+             };
+       options.Events = new JwtBearerEvents
 {
     OnAuthenticationFailed = context =>
     {
-        Console.WriteLine("JWT ERROR: " + context.Exception.Message);
+        Console.WriteLine("JWT FAILED: " + context.Exception.Message);
+        return Task.CompletedTask;
+    },
+    OnTokenValidated = context =>
+    {
+        Console.WriteLine("JWT OK: " + context.Principal.Identity?.Name);
+        Console.WriteLine("ROLE: " + context.Principal.FindFirst("role")?.Value);
         return Task.CompletedTask;
     }
 };

@@ -11,7 +11,7 @@ API.interceptors.request.use(
         const token = localStorage.getItem('jwt_token');
         console.log("TOKEN FROM STORAGE:", token);
            
-        if (token) {
+        if (token && token !== "null") {
             config.headers.Authorization = `Bearer ${token}`;
         }
         console.log("HEADERS:", config.headers);
