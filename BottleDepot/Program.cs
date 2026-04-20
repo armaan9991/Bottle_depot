@@ -2,6 +2,7 @@ using MySqlConnector;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ builder.Services
             ValidateAudience         = true,
             ValidateLifetime         = true,
             ValidateIssuerSigningKey = true,
+
             ValidIssuer              = builder.Configuration["Jwt:Issuer"],
             ValidAudience            = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey         = new SymmetricSecurityKey(
@@ -41,21 +43,12 @@ builder.Services
             // RoleClaimType            = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
             // NameClaimType            = "name"
             NameClaimType = "name",
-            RoleClaimType = "role"
-        };
+            RoleClaimType = ClaimTypes.Role        };
         options.Events = new JwtBearerEvents
 {
     OnAuthenticationFailed = context =>
     {
         Console.WriteLine("JWT ERROR: " + context.Exception.Message);
-        return Task.CompletedTask;
-    }
-};
-options.Events = new JwtBearerEvents
-{
-    OnAuthenticationFailed = context =>
-    {
-        Console.WriteLine("JWT FAILED: " + context.Exception.Message);
         return Task.CompletedTask;
     }
 };
