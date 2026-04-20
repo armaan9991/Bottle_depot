@@ -12,7 +12,7 @@ API.interceptors.request.use(
         console.log("TOKEN FROM STORAGE:", token);
            
         if (token && token !== "null") {
-            config.headers.Authorization = `Bearer ${token}`;
+            config.headers.set('Authorization', `Bearer ${token}`);
         }
         console.log("HEADERS:", config.headers);
 
