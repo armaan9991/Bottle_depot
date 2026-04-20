@@ -22,7 +22,7 @@ export default function Login() {
             localStorage.setItem("jwt_token", resp.token);
             localStorage.setItem("user", JSON.stringify(resp));
 
-            if (resp.role === 'Admin') navigate('/admin/dashboard',{replace : true});
+            if (resp.role === 'admin') navigate('/admin/dashboard',{replace : true});
             else                       navigate('/employee/dashboard',{replace:true});
         } catch {
             setError('Invalid Employee ID or password');
