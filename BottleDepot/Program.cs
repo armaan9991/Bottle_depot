@@ -17,10 +17,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend",
         policy => policy
-            .WithOrigins(
-                "http://localhost:5173",
-                "http://localhost:3000",
-                "https://bottle-depot-i2e6bpce7-armaan9991s-projects.vercel.app"
+            .SetIsOriginAllowed(origin => 
+                origin.StartsWith("http://localhost") ||
+                origin.EndsWith(".vercel.app")
             )
             .AllowAnyHeader()
             .AllowAnyMethod()
