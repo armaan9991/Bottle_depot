@@ -38,9 +38,19 @@ builder.Services
             IssuerSigningKey         = new SymmetricSecurityKey(
                                            Encoding.UTF8.GetBytes(
                                                builder.Configuration["Jwt:Key"]!)),
-            RoleClaimType            = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
-            NameClaimType            = "name"
+            // RoleClaimType            = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
+            // NameClaimType            = "name"
+            NameClaimType = "name",
+            RoleClaimType = "role"
         };
+        options.Events = new JwtBearerEvents
+{
+    OnAuthenticationFailed = context =>
+    {
+        Console.WriteLine("JWT ERROR: " + context.Exception.Message);
+        return Task.CompletedTask;
+    }
+};
     });
 
 
@@ -54,9 +64,11 @@ var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 app.Urls.Add($"http://0.0.0.0:{port}");
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseCors("AllowReact");
+// app.UseCors("AllowReact");
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+
 app.Run();
