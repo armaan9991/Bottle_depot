@@ -1,23 +1,21 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /app
 
-# Copy everything
 COPY . ./
 
-#  MOVE INTO YOUR PROJECT FOLDER
 WORKDIR /app/BottleDepot
 
-# Publish the app
 RUN dotnet publish -c Release -o out
 
-# Runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 
-# Copy published output
 COPY --from=build /app/BottleDepot/out .
 
-# Set port
+ENV Jwt__Key=BottleDepotSuperSecretKey2024Calgary!XYZ
+ENV Jwt__Issuer=BottleDepot
+ENV Jwt__Audience=BottleDepotUsers
+
 ENV ASPNETCORE_URLS=http://+:8080
 EXPOSE 8080
 
