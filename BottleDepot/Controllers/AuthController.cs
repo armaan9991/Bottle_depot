@@ -12,7 +12,9 @@
         {
             private readonly MySqlConnection _db;
             private readonly IConfiguration _config;
-        
+        private const string JwtKey      = "BottleDepotSuperSecretKey2024Calgary!XYZ";
+        private const string JwtIssuer   = "BottleDepot";
+        private const string JwtAudience = "BottleDepotUsers";
 
             public AuthController(MySqlConnection db,IConfiguration config){
             _db=db;
@@ -83,28 +85,27 @@
                 }
             }
             private string GenerateToken(int workId, string name, string role)
-            {
-                var key= new SymmetricSecurityKey( Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
+        {
+            var key   = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtKey));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-                var claims = new[]
-                {
-                    new Claim("workId",        workId.ToString()),
-                    new Claim("name",          name),
-                    new Claim("role", role.ToLower())
-                };
+            var claims = new[]
+            {
+                new Claim("workId", workId.ToString()),
+                new Claim("name",   name),
+                new Claim("role",   role.ToLower())
+            };
 
                 var token = new JwtSecurityToken(
-                    issuer:             _config["Jwt:Issuer"],
-                    audience:           _config["Jwt:Audience"],
-                    claims:             claims,
-                    notBefore:          DateTime.UtcNow,          
-                    expires:            DateTime.UtcNow.AddHours(1),
-                    signingCredentials: creds
-                );
-        
-                return new JwtSecurityTokenHandler().WriteToken(token);
+                issuer:             JwtIssuer,
+                audience:           JwtAudience,
+                claims:             claims,
+                notBefore:          DateTime.UtcNow,
+                expires:            DateTime.UtcNow.AddHours(1),
+                signingCredentials: creds
+            );
 
-            }
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
         }
     }
