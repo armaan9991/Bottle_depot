@@ -29,6 +29,11 @@ builder.Services.AddCors(options =>
 });
 
 // ── JWT ───────────────────────────────────────────────
+
+var jwtKey = "BottleDepotSuperSecretKey2024Calgary!XYZ";
+var jwtIssuer = "BottleDepot";
+var jwtAudience = "BottleDepotUsers";
+
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
@@ -40,17 +45,14 @@ builder.Services
             ValidateAudience         = true,
             ValidateLifetime         = true,
             ValidateIssuerSigningKey = true,
-
-            ValidIssuer              = builder.Configuration["Jwt:Issuer"],
-            ValidAudience            = builder.Configuration["Jwt:Audience"],
+            ValidIssuer              = jwtIssuer,
+            ValidAudience            = jwtAudience,
             IssuerSigningKey         = new SymmetricSecurityKey(
-                                           Encoding.UTF8.GetBytes(
-                                               builder.Configuration["Jwt:Key"]!)),
-            // RoleClaimType            = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role",
-            // NameClaimType            = "name"
+                                           Encoding.UTF8.GetBytes(jwtKey)),
             NameClaimType = "name",
             RoleClaimType = "role"       
-             };
+        };   
+            
        options.Events = new JwtBearerEvents
 {
     OnAuthenticationFailed = context =>
