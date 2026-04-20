@@ -5,7 +5,8 @@ using System.Text;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
-
+Console.WriteLine("=== JWT ISSUER: " + builder.Configuration["Jwt:Issuer"]);
+Console.WriteLine("=== JWT KEY: " + builder.Configuration["Jwt:Key"]);
 // ── MySQL ─────────────────────────────────────────────
 builder.Services.AddScoped<MySqlConnection>(_ =>
     new MySqlConnection(
