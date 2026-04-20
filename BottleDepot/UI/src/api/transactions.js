@@ -2,7 +2,7 @@ import API from "./axios";
 
 export const getAllTransactions = async () => {
     try {
-        const response = await API.get('/api/Transaction');
+        const response = await API.get('/api/transaction');
         return response.data;
     } catch (error) {
         console.error("Error fetching transactions:", error);
@@ -12,7 +12,7 @@ export const getAllTransactions = async () => {
 
 export const getTransactionById = async (id) => {
     try {
-        const response = await API.get(`/api/Transaction/${id}`);
+        const response = await API.get(`/api/transaction/${id}`);
         return response.data;
     } catch (error) {
         console.error(`Error fetching transaction ${id}:`, error);
@@ -22,7 +22,7 @@ export const getTransactionById = async (id) => {
 
 export const getTransactionsByEmployee = async (workId) => {
     try {
-        const response = await API.get(`/api/Transaction/employee/${workId}`);
+        const response = await API.get(`/api/transaction/employee/${workId}`);
         return response.data;
     } catch (error) {
         console.error(`Error fetching transactions for employee ${workId}:`, error);
@@ -32,7 +32,7 @@ export const getTransactionsByEmployee = async (workId) => {
 
 export const createTransaction = async (transactionData) => {
     try {
-        const response = await API.post('/api/Transaction', transactionData);
+        const response = await API.post('/api/transaction', transactionData);
         return response.data;
     } catch (error) {
         console.error("Error creating transaction:", error);

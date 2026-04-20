@@ -2,7 +2,7 @@ import API from "./axios";
 
 export const getAllCustomers = async () => {
     try {
-        const response = await API.get('/api/Customer');
+        const response = await API.get('/api/customer');
         return response;
     } catch (error) {
         console.error("Error fetching customers:", error);
@@ -12,7 +12,7 @@ export const getAllCustomers = async () => {
 
 export const getCustomerById = async (id) => {
     try {
-        const response = await API.get(`/api/Customer/${id}`);
+        const response = await API.get(`/api/customer/${id}`);
         return response;
     } catch (error) {
         console.error(`Error fetching customer ${id}:`, error);
@@ -23,7 +23,7 @@ export const getCustomerById = async (id) => {
 export const createCustomer = async (customerData) => {
     try {
         console.log(customerData);
-        const response = await API.post('/api/Customer', customerData);
+        const response = await API.post('/api/customer', customerData);
         console.log(response)
         return response.data;
     } catch (error) {
@@ -34,7 +34,7 @@ export const createCustomer = async (customerData) => {
 
 export const updateCustomer = async (id, customerData) => {
     try {
-        const response = await API.put(`/api/Customer/${id}`, customerData);
+        const response = await API.put(`/api/customer/${id}`, customerData);
         return response;
     } catch (error) {
         console.error(`Error updating customer ${id}:`, error);

@@ -7,7 +7,7 @@ using System.Text;
 namespace BottleDepot.Models
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/auth")]
     public class AuthController : ControllerBase
     {
         private readonly MySqlConnection _db;

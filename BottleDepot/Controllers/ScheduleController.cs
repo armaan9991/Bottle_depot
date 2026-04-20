@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace BottleDepot.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/schedule")]
     public class ScheduleController: ControllerBase
     {
         public readonly MySqlConnection _db;

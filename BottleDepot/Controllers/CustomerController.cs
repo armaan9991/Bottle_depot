@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace BottleDepot.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/customer")]
     public class CustomerController : ControllerBase
     {
         private readonly MySqlConnection _db;
