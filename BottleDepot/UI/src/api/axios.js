@@ -7,23 +7,21 @@ const API = axios.create({
 // This "interceptor" runs before every single API request
 API.interceptors.request.use(
     (config) => {
-
         const token = localStorage.getItem('jwt_token');
         console.log("TOKEN FROM STORAGE:", token);
            
         if (token && token !== "null") {
-            config.headers.set('Authorization', `Bearer ${token}`);
+            config.headers = {
+                ...config.headers,
+                Authorization: `Bearer ${token}`
+            };
         }
-        console.log("HEADERS:", config.headers);
-
+        
+        console.log("AUTH HEADER:", config.headers.Authorization);
         return config;
     },
-    (error) => {
-        console.log("rejected here!")
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
-
 // API.interceptors.response.use(
 //     (response) => response,
 //     (error) => {
