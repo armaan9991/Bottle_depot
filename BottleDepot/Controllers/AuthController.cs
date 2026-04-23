@@ -108,15 +108,19 @@
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        [Authorize]
-        [HttpGet("me")]
-        public IActionResult Me()
-        {
-            return Ok(User.Claims.Select(c=> new {
+       [Authorize]
+[HttpGet("me")]
+public IActionResult Me()
+{
+    return Ok(new
+    {
+        Name = User.Identity?.Name,
+        Claims = User.Claims.Select(c => new {
             c.Type,
             c.Value
-         }));
-        }
+        })
+    });
+}
         }
 
     }
