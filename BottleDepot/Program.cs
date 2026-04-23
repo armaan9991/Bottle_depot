@@ -20,15 +20,14 @@ builder.Services.AddScoped<MySqlConnection>(_ =>
 // ── CORS ──────────────────────────────────────────────
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        policy => policy
-            .SetIsOriginAllowed(origin => 
+    options.AddPolicy("AllowFrontend", policy =>
+        policy
+            .SetIsOriginAllowed(origin =>
                 origin.StartsWith("http://localhost") ||
                 origin.EndsWith(".vercel.app")
             )
             .AllowAnyHeader()
             .AllowAnyMethod()
-            .AllowCredentials()
     );
 });
 
@@ -50,7 +49,7 @@ builder.Services
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer           = true,
-            ValidateAudience         = false,
+            ValidateAudience         = true,
             ValidateLifetime         = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer              = jwtIssuer,
@@ -66,26 +65,33 @@ builder.Services
     OnMessageReceived = context =>
     {
         Console.WriteLine(
-            "RAW HEADER = " +
-            context.Request.Headers["Authorization"].ToString()
+            "TOKEN RECEIVED: " +
+            context.Token
         );
-
         return Task.CompletedTask;
     },
 
     OnAuthenticationFailed = context =>
     {
         Console.WriteLine(
-            "JWT FAILED = " +
-            context.Exception.ToString()
+            "JWT FAILED: " +
+            context.Exception.Message
         );
-
         return Task.CompletedTask;
     },
 
     OnTokenValidated = context =>
     {
-        Console.WriteLine("JWT VALIDATED");
+        Console.WriteLine("JWT OK");
+        return Task.CompletedTask;
+    },
+
+    OnChallenge = context =>
+    {
+        Console.WriteLine(
+            "AUTH CHALLENGE: " +
+            context.ErrorDescription
+        );
         return Task.CompletedTask;
     }
 };
