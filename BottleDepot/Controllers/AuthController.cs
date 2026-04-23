@@ -71,7 +71,7 @@
                 var token = GenerateToken(workId,name,role);
 
                 return Ok(new
-                {
+                {   
                     workId,name,role,email,token
                 });
                 }

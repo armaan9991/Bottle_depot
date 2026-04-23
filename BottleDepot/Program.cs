@@ -41,9 +41,9 @@ builder.Services
         options.MapInboundClaims = false;
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer           = true,
+            ValidateIssuer           = false,
             ValidateAudience         = true,
-            ValidateLifetime         = true,
+            ValidateLifetime         = false,
             ValidateIssuerSigningKey = true,
             ValidIssuer              = jwtIssuer,
             ValidAudience            = jwtAudience,
