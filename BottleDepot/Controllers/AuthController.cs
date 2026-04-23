@@ -93,7 +93,7 @@
                 {
                     new Claim("workId", workId.ToString()),
                     new Claim("name",   name),
-                    new Claim("role",   role.ToLower())
+                    new Claim(ClaimTypes.Role,   role.ToLower())
                 };
 
                     var token = new JwtSecurityToken(

@@ -62,7 +62,7 @@ builder.Services
             IssuerSigningKey         = new SymmetricSecurityKey(
                                            Encoding.UTF8.GetBytes(jwtKey!)),
             NameClaimType = "name",
-            RoleClaimType = "role"
+            RoleClaimType = ClaimTypes.Role
         };
 
         options.Events = new JwtBearerEvents
