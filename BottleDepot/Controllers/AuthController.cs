@@ -4,6 +4,8 @@
     using System.IdentityModel.Tokens.Jwt;
     using System.Security.Claims;
     using System.Text;
+    using Microsoft.AspNetCore.Authorization;
+
     namespace BottleDepot.Models
     {
         [ApiController]
@@ -105,5 +107,16 @@
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        [Authorize]
+        [HttpGet("me")]
+        public IActionResult Me()
+        {
+            return Ok(User.Claims.Select(c=> new {
+            c.Type,
+            c.Value
+         }));
         }
+        }
+
     }
