@@ -50,6 +50,7 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
+        options.UseSecurityTokenValidators =true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer           = false,
