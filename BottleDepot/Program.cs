@@ -63,14 +63,18 @@ builder.Services
        options.Events = new JwtBearerEvents
 {
     OnMessageReceived = context =>
+{
+    var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+    Console.WriteLine("RAW AUTH HEADER: " + authHeader);
+    
+    if (authHeader?.StartsWith("Bearer ") == true)
     {
-        Console.WriteLine(
-            "TOKEN RECEIVED: " +
-            context.Token
-        );
-        return Task.CompletedTask;
-    },
-
+        context.Token = authHeader.Substring(7);
+    }
+    
+    Console.WriteLine("TOKEN RECEIVED: " + context.Token);
+    return Task.CompletedTask;
+},
     OnAuthenticationFailed = context =>
     {
         Console.WriteLine(
