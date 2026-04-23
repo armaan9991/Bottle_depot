@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Claims;
+using Microsoft.AspNetCore.HttpOverrides;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,6 +42,13 @@ var jwtAudience = builder.Configuration["Jwt:Audience"];
 Console.WriteLine(jwtKey?.Length);
 Console.WriteLine(jwtIssuer);
 Console.WriteLine(jwtAudience);
+
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.All;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -110,8 +118,14 @@ builder.Services.AddSwaggerGen();    // ← simple, no JWT config
 var app = builder.Build();
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 app.Urls.Add($"http://0.0.0.0:{port}");
+
+app.UseForwardedHeaders(new ForwardedHeadersOptions
+{
+    ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.All
+});
 app.UseSwagger();
 app.UseSwaggerUI();
+app.UseForwardedHeaders();
 // app.UseCors("AllowReact");
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
