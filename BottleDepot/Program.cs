@@ -39,15 +39,18 @@ var jwtKey = builder.Configuration["Jwt:Key"];
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 var jwtAudience = builder.Configuration["Jwt:Audience"];
 
+Console.WriteLine(jwtKey?.Length);
+Console.WriteLine(jwtIssuer);
+Console.WriteLine(jwtAudience);
+
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
         // options.UseSecurityTokenValidators = true;
-        options.MapInboundClaims = false;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer           = true,
-            ValidateAudience         = true,
+            ValidateAudience         = false,
             ValidateLifetime         = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer              = jwtIssuer,
@@ -60,14 +63,36 @@ builder.Services
             
        options.Events = new JwtBearerEvents
 {
-    OnAuthenticationFailed = context =>
+    OnMessageReceived = context =>
     {
-        Console.WriteLine("JWT FAILED: " + context.Exception.Message);
+        Console.WriteLine(
+            "TOKEN RECEIVED: " +
+            context.Token
+        );
         return Task.CompletedTask;
     },
+
+    OnAuthenticationFailed = context =>
+    {
+        Console.WriteLine(
+            "JWT FAILED: " +
+            context.Exception.Message
+        );
+        return Task.CompletedTask;
+    },
+
     OnTokenValidated = context =>
     {
-        Console.WriteLine("JWT OK: " + context.Principal?.Identity?.Name);
+        Console.WriteLine("JWT OK");
+        return Task.CompletedTask;
+    },
+
+    OnChallenge = context =>
+    {
+        Console.WriteLine(
+            "AUTH CHALLENGE: " +
+            context.ErrorDescription
+        );
         return Task.CompletedTask;
     }
 };
