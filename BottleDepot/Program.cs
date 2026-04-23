@@ -5,8 +5,12 @@ using System.Text;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
-Console.WriteLine("=== JWT ISSUER: " + builder.Configuration["Jwt:Issuer"]);
-Console.WriteLine("=== JWT KEY: " + builder.Configuration["Jwt:Key"]);
+
+Console.WriteLine("JWT KEY: " + builder.Configuration["Jwt:Key"]);
+Console.WriteLine("JWT ISSUER: " + builder.Configuration["Jwt:Issuer"]);
+Console.WriteLine("JWT AUDIENCE: " + builder.Configuration["Jwt:Audience"]);
+
+
 // ── MySQL ─────────────────────────────────────────────
 builder.Services.AddScoped<MySqlConnection>(_ =>
     new MySqlConnection(
@@ -30,25 +34,26 @@ builder.Services.AddCors(options =>
 
 // ── JWT ───────────────────────────────────────────────
 
-var jwtKey = "BottleDepotSuperSecretKey2024Calgary!XYZ";
-var jwtIssuer = "BottleDepot";
-var jwtAudience = "BottleDepotUsers";
+// ---------- JWT FROM CONFIG ----------
+var jwtKey = builder.Configuration["Jwt:Key"];
+var jwtIssuer = builder.Configuration["Jwt:Issuer"];
+var jwtAudience = builder.Configuration["Jwt:Audience"];
 
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
-        options.UseSecurityTokenValidators = true;
+        // options.UseSecurityTokenValidators = true;
         options.MapInboundClaims = false;
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer           = false,
+            ValidateIssuer           = true,
             ValidateAudience         = true,
-            ValidateLifetime         = false,
+            ValidateLifetime         = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer              = jwtIssuer,
             ValidAudience            = jwtAudience,
             IssuerSigningKey         = new SymmetricSecurityKey(
-                                           Encoding.UTF8.GetBytes(jwtKey)),
+                                           Encoding.UTF8.GetBytes(jwtKey!)),
             NameClaimType = "name",
             RoleClaimType = "role"       
         };   
@@ -62,7 +67,7 @@ builder.Services
     },
     OnTokenValidated = context =>
     {
-        Console.WriteLine("JWT OK: " + context.Principal.Identity?.Name);
+        Console.WriteLine("JWT OK: " + context.Principal?.Identity?.Name);
         return Task.CompletedTask;
     }
 };

@@ -12,9 +12,7 @@
         {
             private readonly MySqlConnection _db;
             private readonly IConfiguration _config;
-        private const string JwtKey      = "BottleDepotSuperSecretKey2024Calgary!XYZ";
-        private const string JwtIssuer   = "BottleDepot";
-        private const string JwtAudience = "BottleDepotUsers";
+       
 
             public AuthController(MySqlConnection db,IConfiguration config){
             _db=db;
@@ -86,7 +84,7 @@
             }
             private string GenerateToken(int workId, string name, string role)
         {
-            var key   = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtKey));
+            var key   = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
@@ -97,8 +95,8 @@
             };
 
                 var token = new JwtSecurityToken(
-                issuer:             JwtIssuer,
-                audience:           JwtAudience,
+                issuer:             _config["Jwt:Issuer"],
+                audience:           _config["Jwt:Audience"],
                 claims:             claims,
                 notBefore:          DateTime.UtcNow,
                 expires:            DateTime.UtcNow.AddHours(1),
