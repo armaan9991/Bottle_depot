@@ -67,18 +67,26 @@ builder.Services
         options.Events = new JwtBearerEvents
         {
             OnMessageReceived = context =>
-            {
-                var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
-                Console.WriteLine("RAW AUTH HEADER: " + authHeader);
+{
+    var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+    Console.WriteLine("RAW AUTH HEADER: " + authHeader);
 
-                if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
-                {
-                    context.Token = authHeader["Bearer ".Length..].Trim();
-                }
+    if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+    {
+        context.Token = authHeader["Bearer ".Length..].Trim();
+    }
 
-                Console.WriteLine("TOKEN RECEIVED: " + context.Token);
-                return Task.CompletedTask;
-            },
+    // Debug: print each character code around the dots
+    if (context.Token != null)
+    {
+        Console.WriteLine("TOKEN LENGTH: " + context.Token.Length);
+        Console.WriteLine("DOT COUNT: " + context.Token.Count(c => c == '.'));
+        Console.WriteLine("CHAR 36-38: " + string.Join(",", context.Token.Skip(36).Take(3).Select(c => (int)c)));
+    }
+
+    Console.WriteLine("TOKEN RECEIVED: " + context.Token);
+    return Task.CompletedTask;
+},
 
             OnAuthenticationFailed = context =>
             {
