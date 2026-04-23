@@ -66,33 +66,26 @@ builder.Services
     OnMessageReceived = context =>
     {
         Console.WriteLine(
-            "TOKEN RECEIVED: " +
-            context.Token
+            "RAW HEADER = " +
+            context.Request.Headers["Authorization"].ToString()
         );
+
         return Task.CompletedTask;
     },
 
     OnAuthenticationFailed = context =>
     {
         Console.WriteLine(
-            "JWT FAILED: " +
-            context.Exception.Message
+            "JWT FAILED = " +
+            context.Exception.ToString()
         );
+
         return Task.CompletedTask;
     },
 
     OnTokenValidated = context =>
     {
-        Console.WriteLine("JWT OK");
-        return Task.CompletedTask;
-    },
-
-    OnChallenge = context =>
-    {
-        Console.WriteLine(
-            "AUTH CHALLENGE: " +
-            context.ErrorDescription
-        );
+        Console.WriteLine("JWT VALIDATED");
         return Task.CompletedTask;
     }
 };
