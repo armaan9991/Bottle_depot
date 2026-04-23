@@ -11,7 +11,6 @@ Console.WriteLine("JWT KEY: " + builder.Configuration["Jwt:Key"]);
 Console.WriteLine("JWT ISSUER: " + builder.Configuration["Jwt:Issuer"]);
 Console.WriteLine("JWT AUDIENCE: " + builder.Configuration["Jwt:Audience"]);
 
-
 // ── MySQL ─────────────────────────────────────────────
 builder.Services.AddScoped<MySqlConnection>(_ =>
     new MySqlConnection(
@@ -33,8 +32,6 @@ builder.Services.AddCors(options =>
 });
 
 // ── JWT ───────────────────────────────────────────────
-
-// ---------- JWT FROM CONFIG ----------
 var jwtKey = builder.Configuration["Jwt:Key"];
 var jwtIssuer = builder.Configuration["Jwt:Issuer"];
 var jwtAudience = builder.Configuration["Jwt:Audience"];
@@ -53,7 +50,6 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options => {
-        // options.UseSecurityTokenValidators = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer           = false,
@@ -65,66 +61,60 @@ builder.Services
             IssuerSigningKey         = new SymmetricSecurityKey(
                                            Encoding.UTF8.GetBytes(jwtKey!)),
             NameClaimType = "name",
-            RoleClaimType = "role"       
-        };   
-            
-       options.Events = new JwtBearerEvents
-{
-    OnMessageReceived = context =>
-{
-    var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
-    Console.WriteLine("RAW AUTH HEADER: " + authHeader);
-    
-    // DON'T manually set context.Token - let the middleware do it
-    // Only log what we received
-    Console.WriteLine("TOKEN RECEIVED: " + context.Token);
-    return Task.CompletedTask;
-},
-    OnAuthenticationFailed = context =>
-    {
-        Console.WriteLine(
-            "JWT FAILED: " +
-            context.Exception.Message
-        );
-        return Task.CompletedTask;
-    },
+            RoleClaimType = "role"
+        };
 
-    OnTokenValidated = context =>
-    {
-        Console.WriteLine("JWT OK");
-        return Task.CompletedTask;
-    },
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
+                Console.WriteLine("RAW AUTH HEADER: " + authHeader);
 
-    OnChallenge = context =>
-    {
-        Console.WriteLine(
-            "AUTH CHALLENGE: " +
-            context.ErrorDescription
-        );
-        return Task.CompletedTask;
-    }
-};
+                if (!string.IsNullOrEmpty(authHeader) && authHeader.StartsWith("Bearer "))
+                {
+                    context.Token = authHeader["Bearer ".Length..].Trim();
+                }
+
+                Console.WriteLine("TOKEN RECEIVED: " + context.Token);
+                return Task.CompletedTask;
+            },
+
+            OnAuthenticationFailed = context =>
+            {
+                Console.WriteLine("JWT FAILED: " + context.Exception.Message);
+                return Task.CompletedTask;
+            },
+
+            OnTokenValidated = context =>
+            {
+                Console.WriteLine("JWT OK");
+                return Task.CompletedTask;
+            },
+
+            OnChallenge = context =>
+            {
+                Console.WriteLine("AUTH CHALLENGE: " + context.ErrorDescription);
+                return Task.CompletedTask;
+            }
+        };
     });
-
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();    // ← simple, no JWT config
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
 app.Urls.Add($"http://0.0.0.0:{port}");
 
-
 app.UseSwagger();
 app.UseSwaggerUI();
 app.UseForwardedHeaders();
-// app.UseCors("AllowReact");
 app.UseCors("AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 
 app.Run();
