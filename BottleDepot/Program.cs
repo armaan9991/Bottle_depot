@@ -75,11 +75,8 @@ builder.Services
     var authHeader = context.Request.Headers["Authorization"].FirstOrDefault();
     Console.WriteLine("RAW AUTH HEADER: " + authHeader);
     
-    if (authHeader?.StartsWith("Bearer ") == true)
-    {
-        context.Token = authHeader.Substring(7);
-    }
-    
+    // DON'T manually set context.Token - let the middleware do it
+    // Only log what we received
     Console.WriteLine("TOKEN RECEIVED: " + context.Token);
     return Task.CompletedTask;
 },
