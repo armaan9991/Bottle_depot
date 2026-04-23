@@ -48,7 +48,7 @@ builder.Services
         {
             ValidateIssuer           = true,
             ValidateAudience         = true,
-            ValidateLifetime         = false,
+            ValidateLifetime         = true,
             ValidateIssuerSigningKey = true,
             ValidIssuer              = jwtIssuer,
             ValidAudience            = jwtAudience,
