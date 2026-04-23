@@ -10,15 +10,12 @@ API.interceptors.request.use(
         const token = localStorage.getItem('jwt_token');
         console.log("TOKEN FROM STORAGE:", token);
            
-console.log("TOKEN TYPE:", typeof response.data.token);
-console.log("TOKEN VALUE:", response.data.token);
-
-if (typeof token !== "string") {
-    console.error("INVALID TOKEN SHAPE:", token);
-    return;
-}
-
-localStorage.setItem("jwt_token", token);
+        if (token && token !== "null") {
+            config.headers = {
+                ...config.headers,
+                Authorization: `Bearer ${token}`
+            };
+        }
         
         console.log("AUTH HEADER:", config.headers.Authorization);
         return config;
